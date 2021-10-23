@@ -1,0 +1,1 @@
+bundle exec rubocop && ruby bin/main.rb
