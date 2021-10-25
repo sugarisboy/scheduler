@@ -8,3 +8,6 @@ Style/NegatedIf:      # Не форсировать unless
   Enabled: false
 AllCops:              # Автоматически включать все проверки
   NewCops: enable
+Metrics/BlockLength:
+  IgnoredMethods:
+    - RSpec.describe
