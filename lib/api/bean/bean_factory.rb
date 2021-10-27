@@ -31,13 +31,22 @@ class BeanFactory
       end
 
       @stack << type
-      instance = Object.const_get(type.name).new
-      instance.register_bean(@context)
+      instance = create_new(type)
       @stack.delete(type)
 
       @factory[type] = instance
       instance
     end
+  end
+
+  def create_new(type)
+    instance = Object.const_get(type.name).new
+    instance.register_bean(@context)
+    instance
+  end
+
+  def primary(type, value)
+    @factory[type] = value
   end
 
   def bean?(type)

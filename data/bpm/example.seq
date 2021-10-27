@@ -1,0 +1,68 @@
+actor User
+entity self
+title Удаление лекции
+
+group GetWeekDayDelegate
+    # Вывод текста
+    self->User:Введите день недели
+
+    # Ввод пользователя записать в week_day
+    # и преобразовать в integer
+    User->self:week_day
+
+    # Вызов в таске задачи validate_week_day
+    self->Execution:validate_week_day
+    
+    alt valid
+        self->Execution:stop
+    else
+        alt empty
+            self->Execution:stop
+        else
+            self->Delegate:self
+        end
+    end
+end
+
+group GetLectureNumDelegate
+    # Вывод текста
+    self->User:Введите номер пары
+
+    # Ввод пользователя записать в week_day
+    # и преобразовать в integer
+    User->self:lecture_num
+
+    # Вызов в таске задачи validate_week_day
+    self->Execution:validate_lecture_num
+    
+    alt valid
+    	self->Execution:stop
+    else 
+    	self->Delegate:self
+    end
+end
+
+group GetCabinatDelegate
+    # Вывод текста
+    self->User:Введите номер кабинета
+
+    # Ввод пользователя записать в week_day
+    # и преобразовать в integer
+    User->self:cabinet
+
+    # Вызов в таске задачи validate_week_day
+    self->Execution:validate_cabinet
+    
+    alt valid
+    	self->Execution:stop
+    else 
+    	self->Delegate:self
+    end
+end
+
+group DropLectureTask
+	self->Delegate:GetWeekDayDelegate
+    self->Delegate:GetLectureNumDelegate
+    self->Delegate:GetCabinatDelegate
+    self->ExExecution:drop_lecture
+end

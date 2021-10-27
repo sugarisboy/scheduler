@@ -7,6 +7,7 @@ require_relative '../model/scheduler'
 require_relative '../model/lector'
 require_relative '../model/lecture'
 require_relative '../../../lib/api/bean/bean'
+require_relative '../repository/lector_repository'
 require_relative '../repository/scheduler_repository'
 
 # Default description change it
@@ -24,7 +25,7 @@ class ModelReader
   SEPARATOR = ';'
 
   def injections
-    @scheduler_repository = @context.inject(SchedulerRepository)
+    @scheduler_repository = inject(SchedulerRepository)
   end
 
   def load
@@ -70,6 +71,6 @@ class ModelReader
   end
 
   def parse_cabinet(csv_line)
-    csv_line[CABINET].strip
+    csv_line[CABINET].strip.to_i
   end
 end

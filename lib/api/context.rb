@@ -9,6 +9,8 @@ require_relative 'bean/bean_factory'
 class Context
   include Bean
 
+  attr_reader :bean_factory
+
   def initialize
     @bean_factory = BeanFactory.new(self)
     register_bean(self)

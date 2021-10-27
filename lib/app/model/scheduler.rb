@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'day_scheduler'
-require_relative '../../../lib/api/bean/bean'
 
 # Scheduler
 class Scheduler
-  include Bean
 
   attr_reader :data
 
@@ -25,5 +23,45 @@ class Scheduler
 
   def to_s
     "#{self.class.name}[data=#{data}]"
+  end
+
+  def each_lecture
+    return enum_for(:iterator) unless block_given?
+
+    @data.each_pair do |day_week, day_data|
+      day_data.data.each_pair do |num_lecture, lectures|
+        lectures.each do |lecture|
+          yield lecture, day_week, num_lecture
+        end
+      end
+    end
+  end
+
+  def select_lecture
+    return enum_for(:select) unless block_given?
+
+    response = Scheduler.new
+    each_lecture do |lecture, day, num|
+      response.data[day].data[num].push(lecture) if yield lecture, day, num
+    end
+
+    response
+  end
+
+  def map
+    return enum_for(:map) unless block_given?
+
+    result = []
+    each_lecture do |lecture, day, num|
+      value = yield lecture, day, num
+      result << value
+    end
+    result
+  end
+
+  def count
+    count = 0
+    each_lecture { |_, _, _| count += 1 }
+    count
   end
 end

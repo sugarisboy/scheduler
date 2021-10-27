@@ -33,9 +33,11 @@ module IOUtils
     colored(str, 46)
   end
 
-  private
+  def self.as_red(str)
+    colored(str, 31)
+  end
 
-  def colored(str, code)
+  def self.colored(str, code)
     format("\e[#{code}m#{str}\e[0m")
   end
 end

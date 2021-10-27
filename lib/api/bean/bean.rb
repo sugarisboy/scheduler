@@ -12,6 +12,7 @@ module Bean
     @context = context
     context.add_bean(self)
     injections
+    self
   end
 
   # @abstract
