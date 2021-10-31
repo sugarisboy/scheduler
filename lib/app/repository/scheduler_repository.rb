@@ -67,5 +67,6 @@ class SchedulerRepository
         instance: lec
       }
     end
+    nil
   end
 end
