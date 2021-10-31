@@ -9,23 +9,21 @@ require_relative 'utils/io_utils'
 class Application
   include Bean
 
-  def initialize
+  def initialize(context = Context.new)
     Log.info('- Stating application')
-    @context = Context.new
+    @context = context
     up_context
   end
 
   def up_context
-    begin
-      Log.info('- Start injections')
-      injections
-      Log.info('- Start loading application')
-      load
-      Log.info('- Application started')
-      start
-    rescue BusinessException => e
-      Log.error(IOUtils.as_red(e))
-    end
+    Log.info('- Start injections')
+    injections
+    Log.info('- Start loading application')
+    load
+    Log.info('- Application started')
+    start
+  rescue BusinessException => e
+    Log.error(IOUtils.as_red(e))
   end
 
   # @abstract

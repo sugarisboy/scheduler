@@ -8,15 +8,20 @@ module Bean
   Log = Logger.new($stdout)
 
   def register_bean(context)
-    Log.debug("Register bean #{self.class.name}")
+    Log.level = Logger::INFO
+    Log.info("Register bean #{self.class.name}")
     @context = context
     context.add_bean(self)
     injections
+    post_initialize
     self
   end
 
   # @abstract
   def injections; end
+
+  # @abstract
+  def post_initialize; end
 
   def inject(type)
     @context.inject(type)

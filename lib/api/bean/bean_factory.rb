@@ -50,7 +50,16 @@ class BeanFactory
   end
 
   def bean?(type)
-    pp type
     true
+  end
+
+  def add_bean_if_not_exist(type, value)
+    return if @factory.key?(type)
+
+    primary(type, value)
+  end
+
+  def count
+    @factory.length
   end
 end

@@ -20,11 +20,19 @@ class Context
     @bean_factory.add(instance_bean)
   end
 
+  def add_bean_if_not_exist(type, instance_bean)
+    @bean_factory.add_bean_if_not_exist(type, instance_bean)
+  end
+
   def inject(type)
     @bean_factory.find(type)
   end
 
   def injects(type)
     @bean_factory.find_all(type)
+  end
+
+  def to_s
+    "Context[beanCount=#{@bean_factory.count}"
   end
 end

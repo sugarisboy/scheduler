@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../../api/utils/io_utils'
-require_relative '../model/subject'
 require_relative '../model/day_scheduler'
 require_relative '../model/scheduler'
-require_relative '../model/lector'
 require_relative '../model/lecture'
 require_relative '../../../lib/api/bean/bean'
-require_relative '../repository/lector_repository'
-require_relative '../repository/scheduler_repository'
+require_relative '../service/scheduler_service'
 
 # Default description change it
 class ModelReader
@@ -25,7 +22,7 @@ class ModelReader
   SEPARATOR = ';'
 
   def injections
-    @scheduler_repository = inject(SchedulerRepository)
+    @service = inject(SchedulerService)
   end
 
   def load
@@ -36,7 +33,7 @@ class ModelReader
       num_lecture = parse_num_lecture(row)
       lecture = parse_lecture(row)
 
-      @scheduler_repository.save_lecture(week_day, num_lecture, lecture)
+      @service.add_lecture(week_day, num_lecture, lecture)
     end
   end
 
@@ -57,13 +54,11 @@ class ModelReader
   end
 
   def parse_lector(csv_line)
-    fio = csv_line[TEACHER].strip
-    Lector.new(fio)
+    csv_line[TEACHER].strip
   end
 
   def parse_subject(csv_line)
-    name = csv_line[SUBJECT].strip
-    Subject.new(name)
+    csv_line[SUBJECT].strip
   end
 
   def parse_groups(csv_line)

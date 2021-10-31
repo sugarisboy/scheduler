@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../lib/api/context'
+
 # Default description change it
 class TestContext < Context
   def bean(type, value)

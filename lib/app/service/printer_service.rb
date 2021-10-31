@@ -2,12 +2,20 @@
 
 require_relative '../../api/bean/bean'
 require_relative '../../api/utils/io_utils'
+require_relative '../service/scheduler_service'
 
 # Default description change it
 class PrinterService
   include Bean
 
+  def injections
+    @service = inject(SchedulerService)
+  end
+
   TABLE_TEMPLATE = '%<cabinet>5s |%<subject>40s |%<lector>20s |%<groups>s'
+
+  SEPARATOR = '-----------------------------------'
+  BOLD_SEPARATOR = '================================='
 
   DAY_WEEK_TO_NAME = {
     1 => 'Понедельник',
@@ -18,25 +26,37 @@ class PrinterService
     6 => 'Суббота'
   }.freeze
 
-  def print(scheduler)
+  def print_all(scheduler = @repository.scheduler)
     days = scheduler.data
     days.each_pair do |day_week, day_scheduler|
       print_day(day_week, day_scheduler)
     end
   end
 
-  def print_day(day_week, day_scheduler)
-    puts IOUtils.as_green("================================= #{DAY_WEEK_TO_NAME[day_week].upcase} =================================")
-    numbered_lectures = day_scheduler.data
-    numbered_lectures.each_pair do |num_lecture, lectures|
+  def print_day(week_day, day_scheduler)
+    msg = "#{BOLD_SEPARATOR} #{DAY_WEEK_TO_NAME[week_day]} #{BOLD_SEPARATOR}"
+    puts IOUtils.as_green(msg)
+    day_scheduler.data.each do |num_lecture, lectures|
       print_lectures(num_lecture, lectures)
     end
   end
 
-  def print_lectures(num_lecture, lectures)
-    return if lectures.empty?
+  #def print_day(day_week, day_scheduler)
+  #  msg = "#{BOLD_SEPARATOR} #{DAY_WEEK_TO_NAME[day_week]} #{BOLD_SEPARATOR}"
+  #  puts IOUtils.as_green(msg)
+  #  numbered_lectures = day_scheduler.data
+  #  numbered_lectures.each_pair do |num_lecture, lectures|
+  #    print_lectures(num_lecture, lectures)
+  #  end
+  #end
 
-    puts IOUtils.as_aqua("----------------------------------- #{num_lecture} пары ----------------------------------- ")
+  def print_lectures(num_lecture, lectures)
+    return if lectures.count.zero?
+
+    lectures = lectures.sort_by { |lecture| lecture.cabinet }
+
+    msg = "#{SEPARATOR} #{num_lecture} пары #{SEPARATOR}"
+    puts IOUtils.as_aqua(msg)
     msg = format_as_table(
       TABLE_TEMPLATE,
       'каб', 'Дисциплина', 'Преподаватель', 'Группы'
@@ -46,14 +66,36 @@ class PrinterService
     lectures.each { |lecture| print_lecture(lecture) }
   end
 
+  #def print_lectures(num_lecture, lectures)
+  #  return if lectures.empty?
+  #
+  #  msg = "#{SEPARATOR} #{num_lecture} пары #{SEPARATOR}"
+  #  puts IOUtils.as_aqua(msg)
+  #  msg = format_as_table(
+  #    TABLE_TEMPLATE,
+  #    'каб', 'Дисциплина', 'Преподаватель', 'Группы'
+  #  )
+  #  puts IOUtils.as_aqua(msg)
+  #
+  #  lectures.each { |lecture| print_lecture(lecture) }
+  #end
+
   def print_lecture(lecture)
-    puts format_as_table(
+    puts format_lecture(lecture)
+  end
+
+  def format_lecture(lecture)
+    format_as_table(
       TABLE_TEMPLATE,
       lecture.cabinet,
-      lecture.subject.name,
-      lecture.lector.fio,
+      lecture.subject,
+      lecture.lector,
       lecture.groups.join(',')
     )
+  end
+
+  def format_day(day)
+    DAY_WEEK_TO_NAME[day]
   end
 
   def format_as_table(template, cabinet, subject, lector, groups)

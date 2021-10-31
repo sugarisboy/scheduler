@@ -14,7 +14,7 @@ module IOUtils
   def self.read_file(file_name)
     local_path = "#{DATA_DIR}/#{file_name}"
     path = File.expand_path(local_path, __dir__)
-    File.read(path)
+    File.read(path, encoding: 'utf-8')
   end
 
   def self.as_pink(str)

@@ -22,15 +22,12 @@ class SchedulerRepository
 
   # Сохранение лекции с минимальной проверкой на тип данных
   def save_lecture(day_week, num_lecture, lecture)
-    Log.debug("Start create lecture #{day_week},#{num_lecture},#{lecture}")
-
     @validator.validate_day_week(day_week)
     @validator.validate_num_lecture(num_lecture)
 
     day = @scheduler.data[day_week]
     num = day.data[num_lecture]
     num << lecture
-    Log.debug("Finish creating lecture #{day_week},#{num_lecture},#{lecture}")
   end
 
   # Вовзращает билдер запроса по поиску лекций
@@ -50,7 +47,25 @@ class SchedulerRepository
     result
   end
 
-  def just
-    "do it"
+  # TODO: test remove two elems with equals data, but difference time
+  def delete_lecture(day_week, num_lecture, lecture)
+    @scheduler.data[day_week]
+              .data[num_lecture]
+              .delete(lecture)
+  end
+
+  # @param [FalseClass] extend сообщает об получение расширенной информации
+  def find_lecture(lecture, extend: false)
+    @scheduler.each do |lec, day, num|
+      next if lec != lecture
+
+      return lec unless extend
+
+      return {
+        day_week: day,
+        num_lecture: num,
+        instance: lec
+      }
+    end
   end
 end
