@@ -15,7 +15,7 @@ class GroupService
     groups = scheduler.flat_map do |lecture, _, _|
       lecture.groups
     end
-    
+
     groups.uniq.sort
   end
 end

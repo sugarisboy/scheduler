@@ -44,7 +44,7 @@ class PrinterService
   def print_lectures(num_lecture, lectures)
     return if lectures.count.zero?
 
-    lectures = lectures.sort_by { |lecture| lecture.cabinet }
+    lectures = lectures.sort_by(&:cabinet)
 
     msg = "#{SEPARATOR} #{num_lecture} пары #{SEPARATOR}"
     puts IOUtils.as_aqua(msg)

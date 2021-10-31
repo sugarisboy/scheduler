@@ -31,7 +31,9 @@ class Controller
       cmd.execute
     rescue BusinessException => e
       puts IOUtils.as_red(e)
-    rescue Interrupt; end
+    rescue Interrupt => _e
+      Log.error('Controller was stopped')
+    end
     listen
   end
 

@@ -111,6 +111,4 @@ class SchedulerService
   def find_by_cabinet(cabinet)
     @repository.find_all_lectures.cabinet(cabinet).result
   end
-
-  private
 end

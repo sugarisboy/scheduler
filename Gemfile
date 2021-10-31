@@ -8,6 +8,6 @@ group :develop do
   gem 'rspec'
   gem 'rubocop', require: false
   gem 'rubocop-rspec'
-  gem 'tty-prompt'
   gem 'simplecov'
+  gem 'tty-prompt'
 end

@@ -34,8 +34,6 @@ class CommandChangeCabinet < Command
 
     cabinet = @question_cabinet.ask('Введите номер нового кабинета: ')
 
-    @service.update(lecture) do |lecture|
-      lecture.cabinet = cabinet
-    end
+    @service.update(lecture) { |instance| instance.cabinet = cabinet }
   end
 end

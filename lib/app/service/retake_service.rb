@@ -48,9 +48,11 @@ class RetakeService
     Log.debug("Free matrix for day = #{day}: #{free_matrix}")
 
     # Формируем данные о свободных кабинет на каждой паре
-    num_lecture_with_free_cabinets = find_free_cabinets(free_matrix, day, cabinets)
+    num_lecture_with_free_cabinets =
+      find_free_cabinets(free_matrix, day, cabinets)
 
-    Log.debug("Num lecture with free cabinets day = #{day}: #{num_lecture_with_free_cabinets}")
+    Log.debug("Num lecture with free cabinets day = #{day}: " \
+              "#{num_lecture_with_free_cabinets}")
     # Из проанализированных данных пытаемся найти
     # свободное время
     calculate(day, num_lecture_with_free_cabinets)

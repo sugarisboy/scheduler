@@ -26,9 +26,9 @@ class Validator
 
   def not_empty?(value, field)
     not_nil?(value, field)
-    if value.to_s.strip.empty?
-      not_valid "Значение '#{field}' не может быть пустым"
-    end
+    return unless value.to_s.strip.empty?
+
+    not_valid "Значение '#{field}' не может быть пустым"
   end
 
   def positive?(value, field)

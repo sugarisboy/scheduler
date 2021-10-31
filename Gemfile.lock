@@ -59,6 +59,7 @@ GEM
     wisper (2.0.1)
 
 PLATFORMS
+  universal-darwin-20
   x64-mingw32
 
 DEPENDENCIES
