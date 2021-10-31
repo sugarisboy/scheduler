@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'bean/bean'
 require_relative 'context'
-require_relative 'exception/business_exception'
+require_relative 'bean/bean'
 require_relative 'utils/io_utils'
+require_relative 'exception/business_exception'
 
-# Default description change it
+# Родительский класс для главного класса приложения
 class Application
   include Bean
 
@@ -15,6 +15,7 @@ class Application
     up_context
   end
 
+  # Поднятие контекста приложения
   def up_context
     Log.info('- Start injections')
     injections
@@ -27,8 +28,10 @@ class Application
   end
 
   # @abstract
+  # Метод для загрузки приложения
   def load; end
 
   # @abstract
+  # Метод для вызова основного функционала приложения
   def start; end
 end

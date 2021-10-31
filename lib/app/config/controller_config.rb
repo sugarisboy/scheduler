@@ -10,17 +10,19 @@ require_relative '../command/command_exit'
 require_relative '../command/command_print_criteria'
 require_relative '../command/command_find_retake'
 require_relative '../command/command_get_workload'
+require_relative '../command/command_change_cabinet'
 
-# Default description change it
-class CommandConfig
+# Файл конфигурации для кантроллера
+class ControllerConfig
   include Bean
 
   def injections
-    @command_holder = inject(Controller)
+    @controller = inject(Controller)
     @commands = [
       inject(CommandAddElement),
       inject(CommandRemoveElement),
       inject(CommandChangeTime),
+      inject(CommandChangeCabinet),
       inject(CommandPrintAll),
       inject(CommandPrintCriteria),
       inject(CommandFindRetake),
@@ -29,12 +31,11 @@ class CommandConfig
     ]
   end
 
-  # Called after injections
   def post_initialize
     configure
   end
 
   def configure
-    @command_holder.add_commands(@commands)
+    @controller.add_commands(@commands)
   end
 end

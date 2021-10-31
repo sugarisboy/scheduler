@@ -2,7 +2,8 @@
 
 require_relative '../../api/bean/bean'
 
-# Command holder
+# Контроллер приложения
+# Слушаюший действия пользователя и отвечающий на его запросы
 class Controller
   include Bean
 
@@ -17,6 +18,7 @@ class Controller
     @prompt = inject(TTY::Prompt)
   end
 
+  # Метод запуска прослушивания действия пользователя
   def listen
     choice = @commands.map do |command|
       { name: command.name, value: command }
@@ -33,20 +35,16 @@ class Controller
     listen
   end
 
+  # Добавление комманд для контроллера
   def add_commands(commands)
     commands.each { |cmd| add_command(cmd) }
   end
 
+  # Добавление комманды для контроллера
   def add_command(command)
     Log.debug("Add new command #{command.class}")
     raise TypeError, CANT_ADD_CMD_ERROR if !command.is_a? Command
 
     @commands << command
-  end
-
-  def command_info
-    @commands.map do |command, i|
-      "  #{i}. #{command.name}"
-    end.join("\n")
   end
 end

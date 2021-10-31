@@ -2,14 +2,14 @@
 
 require 'tty-prompt'
 require_relative 'command'
-require_relative '../../api/bean/bean'
 require_relative '../service/group_service'
 require_relative '../service/retake_service'
 require_relative '../service/scheduler_service'
 require_relative '../service/lector_service'
 require_relative '../service/printer_service'
+require_relative '../../api/bean/bean'
 
-# Command count patients info
+# Команда для получения информации о загрузке лектора
 class CommandGetWorkload < Command
   include Bean
 

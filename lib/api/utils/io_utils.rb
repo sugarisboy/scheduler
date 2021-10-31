@@ -2,7 +2,7 @@
 
 require 'csv'
 
-# Module for work with input and output streams.
+# Модуль для работы с вводом и выводом данных
 module IOUtils
   DATA_DIR = '../../../data'
 

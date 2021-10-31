@@ -6,7 +6,7 @@ require_relative '../model/scheduler'
 require_relative 'scheduler_query'
 require 'logger'
 
-# Default description change it
+# Класс для ПРЯМОЙ работы с данными
 class SchedulerRepository
   include Bean
 
@@ -30,7 +30,7 @@ class SchedulerRepository
     num << lecture
   end
 
-  # Вовзращает билдер запроса по поиску лекций
+  # Вовзращает билдер запроса с критериями
   def find_all_lectures
     SchedulerQuery.new(self, @scheduler)
   end
@@ -47,13 +47,13 @@ class SchedulerRepository
     result
   end
 
-  # TODO: test remove two elems with equals data, but difference time
   def delete_lecture(day_week, num_lecture, lecture)
     @scheduler.data[day_week]
               .data[num_lecture]
               .delete(lecture)
   end
 
+  # Поиск лекции в раписании
   # @param [FalseClass] extend сообщает об получение расширенной информации
   def find_lecture(lecture, extend: false)
     @scheduler.each do |lec, day, num|

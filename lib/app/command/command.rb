@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# Command
+# Родительский класс для комманд
+# Каждая команда предоставляет закоченный
+# функционал пользователю
 class Command
   attr_reader :name
 
   # @abstract
+  # Метод-обработчик команды в случае вызова
   def execute
     error_msg = format(
       '%<class>s has not implemented method %<method>s',

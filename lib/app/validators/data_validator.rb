@@ -3,7 +3,7 @@
 require_relative '../../api/bean/bean'
 require_relative 'validator'
 
-# Default description change it
+# Валидатор данных
 class DataValidator < Validator
   include Bean
 

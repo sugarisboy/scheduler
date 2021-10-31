@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
-require_relative '../../../api/bean/bean'
 require_relative 'question'
+require_relative '../../../api/bean/bean'
 
-# Default description change it
+# Вопрос о дне недели
 class QuestionWeekDay < Question
   include Bean
 

@@ -7,6 +7,10 @@ require 'logger'
 module Bean
   Log = Logger.new($stdout)
 
+  # Региструрует в контексте самого себя, чтобы другие бины
+  # могли внедрить данный компонент
+  # P. S. Принимает в качестве аргумента контекст,
+  # к которому привязывается для дальнейшего использования
   def register_bean(context)
     Log.level = Logger::INFO
     Log.info("Register bean #{self.class.name}")
@@ -18,11 +22,14 @@ module Bean
   end
 
   # @abstract
+  # Метод для этапа внедрения зависимостей
   def injections; end
 
   # @abstract
+  # Метод, вызывающийся после этапа внедрения зависимостей
   def post_initialize; end
 
+  # Метод для внедрения зависимостей
   def inject(type)
     @context.inject(type)
   end

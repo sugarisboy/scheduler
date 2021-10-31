@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
-require_relative '../../../api/bean/bean'
 require_relative 'question'
+require_relative '../../../api/bean/bean'
 require_relative '../../service/printer_service'
 
-# Default description change it
+# Вопрос о выборе лекции
 class QuestionSelectLecture < Question
   include Bean
 

@@ -3,38 +3,40 @@
 require_relative '../model/scheduler'
 require_relative '../service/lector_service'
 require_relative '../repository/scheduler_repository'
+require_relative '../validators/business_validator'
 require_relative '../../../lib/api/bean/bean'
 
-# Default description change it
+# Сервис для работы с расписанием
 class SchedulerService
   include Bean
-
-  LECTOR_MAX_SUBJECTS = 8
 
   def injections
     @repository = inject(SchedulerRepository)
     @lector_service = inject(LectorService)
+    @business_validator = inject(BusinessValidator)
   end
 
   def add_lecture(day_week, num_lecture, lecture)
     Log.debug("Start create lecture #{day_week},#{num_lecture},#{lecture}")
 
     query = @repository
-              .find_all_lectures
-              .day_week(day_week)
-              .num_lecture(num_lecture)
+            .find_all_lectures
+            .day_week(day_week)
+            .num_lecture(num_lecture)
 
     # Проверка что группа не занята в это время
-    check_is_free_group(lecture.groups, query)
+    @business_validator.check_is_free_group(lecture.groups, query)
 
     # Проверка что лектор не ведет пару в это время
-    check_is_free_lector(lecture.lector, query)
+    @business_validator.check_is_free_lector(lecture.lector, query)
 
     # Проверка что кабинет свободен в это время
-    check_is_free_cabinet(lecture.cabinet, query)
+    @business_validator.check_is_free_cabinet(lecture.cabinet, query)
 
     # Проверка загруженности лектора
-    check_workload_lector(lecture.lector)
+    lector = lecture.lector
+    lector_subjects = @lector_service.find_subjects(lector)
+    @business_validator.check_workload_lector(lector_subjects, lector)
 
     result = @repository.save_lecture(day_week, num_lecture, lecture)
     Log.debug("Finish creating lecture #{day_week},#{num_lecture},#{lecture}")
@@ -50,7 +52,6 @@ class SchedulerService
       info_about_removable[:num_lecture],
       lecture
     )
-
     raise "Can't delete lecture #{lecture}" if deleted.nil?
 
     info_about_removable
@@ -71,17 +72,16 @@ class SchedulerService
     raise 'Use block for update lecture' unless block_given?
 
     deleted = delete_lecture(lecture)
-    old = deleted.instance
+    old = deleted[:instance]
 
     changeable = Lecture.new(old.subject, old.cabinet, old.groups, old.lector)
-
-    changeable = yield changeable
+    yield changeable
 
     begin
-      add_lecture(info.day_week, info.num_lecture, changeable)
+      add_lecture(deleted[:day_week], deleted[:num_lecture], changeable)
     rescue StandardError => e
-      add_lecture(info.day_week, info.num_lecture, deleted)
-      raise BusinessException, "Change data for #{lecture} failed: #{e}"
+      add_lecture(deleted[:day_week], deleted[:num_lecture], lecture)
+      raise BusinessException, "Ошибка при изменении данных лекции: #{e}"
     end
   end
 
@@ -113,43 +113,4 @@ class SchedulerService
   end
 
   private
-
-  def check_is_free_group(groups, query)
-    busy = groups.filter do |group|
-      !query.groups_in(group).result.count.zero?
-    end
-
-    return if busy.empty?
-
-    raise BusinessException, "Группы #{busy.join(', ')} заняты в это время"
-  end
-
-  def check_is_free_lector(lector, query)
-    free = query.lector(lector).result.count.zero?
-
-    return if free
-
-    raise BusinessException, "Лектор #{lector} занят в это время"
-  end
-
-  def check_is_free_cabinet(cabinet, query)
-    free = query.cabinet(cabinet).result.count.zero?
-
-    return if free
-
-    raise BusinessException, "Кабинет #{cabinet} занят в это время"
-  end
-
-  def check_workload_lector(lector)
-    lector_subjects = @lector_service.find_subjects(lector)
-    count = lector_subjects.length
-    overload = LECTOR_MAX_SUBJECTS <= count
-
-    return unless overload
-
-    error_msg = "Лектор #{lector} уже ведет #{LECTOR_MAX_SUBJECTS} пар," \
-                'это число максимально для одного человека'
-
-    raise BusinessException, error_msg
-  end
 end

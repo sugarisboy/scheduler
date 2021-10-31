@@ -1,16 +1,17 @@
 # frozen_string_literal: true
 
-require_relative '../../api/utils/io_utils'
 require_relative '../model/day_scheduler'
 require_relative '../model/scheduler'
 require_relative '../model/lecture'
-require_relative '../../../lib/api/bean/bean'
 require_relative '../service/scheduler_service'
+require_relative '../../api/utils/io_utils'
+require_relative '../../../lib/api/bean/bean'
 
-# Default description change it
+# Класс для чтения данных из файла
 class ModelReader
   include Bean
 
+  # Название колонок в файле
   WEEK_DAY = 'WEEK_DAY'
   NUM_LECTURE = 'NUM_LECTURE'
   TEACHER = 'TEACHER'
@@ -18,6 +19,7 @@ class ModelReader
   CABINET = 'CABINET'
   GROUPS = 'GROUPS'
 
+  # Параметры файла
   FILE = 'data.csv'
   SEPARATOR = ';'
 
@@ -25,6 +27,7 @@ class ModelReader
     @service = inject(SchedulerService)
   end
 
+  # Запуск загрузки данных из файла
   def load
     csv_data = IOUtils.read_csv(FILE, SEPARATOR)
 

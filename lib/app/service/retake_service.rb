@@ -4,7 +4,7 @@ require_relative 'lector_service'
 require_relative '../../api/bean/bean'
 require_relative '../repository/scheduler_repository'
 
-# Default description change it
+# Сервис для работы с пересдачами
 class RetakeService
   include Bean
 
@@ -32,6 +32,8 @@ class RetakeService
     nil
   end
 
+  # Поиск пересдачи в конкретный день, для конкретного лектора и группы
+  # С одной из указанных аудиторий
   def find_retake_time_in_day(day, lector, groups, cabinets)
     Log.debug("Find retake time in day = #{day} started")
     # Массив доступности, где i-ый элемент обозначает

@@ -8,6 +8,7 @@ class BeanFactory
     @stack = []
   end
 
+  # Добавить бин в контекст приложения
   def add(instance_bean)
     # TODO: add check is bean
     type = instance_bean.class
@@ -19,9 +20,9 @@ class BeanFactory
     @factory[type] = instance_bean
   end
 
+  # Поиск бина в контексте приложения
+  # И попытка создать его в противном случае
   def find(type)
-    # TODO: add check is class
-    # TODO: add check is bean instance of
     if @factory.key?(type)
       @factory[type]
     else
@@ -39,26 +40,26 @@ class BeanFactory
     end
   end
 
+  # Создание нового бине
   def create_new(type)
     instance = Object.const_get(type.name).new
     instance.register_bean(@context)
     instance
   end
 
+  # Принудительно сохранить в контекст приложения какой-либо бин
   def primary(type, value)
     @factory[type] = value
   end
 
-  def bean?(type)
-    true
-  end
-
+  # Добавляет бин, если такого нет
   def add_bean_if_not_exist(type, value)
     return if @factory.key?(type)
 
     primary(type, value)
   end
 
+  # Возвращает количество бинов в контексте
   def count
     @factory.length
   end

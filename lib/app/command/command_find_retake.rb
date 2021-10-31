@@ -2,23 +2,21 @@
 
 require 'tty-prompt'
 require_relative 'command'
-require_relative '../../api/bean/bean'
 require_relative '../service/group_service'
 require_relative '../service/retake_service'
-require_relative '../service/scheduler_service'
 require_relative '../service/lector_service'
 require_relative '../service/printer_service'
+require_relative '../../api/bean/bean'
 
-# Command count patients info
+# Команда для поиска времени и места пересдачи
 class CommandFindRetake < Command
   include Bean
 
   def injections
     @prompt = inject(TTY::Prompt)
-    @scheduler_service = inject(SchedulerService)
-    @retake_service = inject(RetakeService)
-    @lector_service = inject(LectorService)
     @group_service = inject(GroupService)
+    @lector_service = inject(LectorService)
+    @retake_service = inject(RetakeService)
     @printer_service = inject(PrinterService)
   end
 

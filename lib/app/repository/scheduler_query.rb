@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Default description change it
+# Класс-билдер для запроса с фильтрацией
 class SchedulerQuery
   def initialize(repository, source)
     @repository = repository
@@ -65,17 +65,19 @@ class SchedulerQuery
     )
   end
 
-  # Осуществитьб поиск и вернуть список лекций
+  # Осуществить поиск и вернуть новое сформированное расписание
   def result
     @source
   end
 
+  # Осуществить поиск и вернуть список лекций
   def lectures
     @source.map { |lecture| lecture }
   end
 
   private
 
+  # Абстракная реализация для применения фильтров
   def where(criteria)
     new_source = @repository.find_by_criteria([criteria], @source)
     SchedulerQuery.new(@repository, new_source)

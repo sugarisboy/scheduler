@@ -2,7 +2,7 @@
 
 require_relative '../../api/exception/validation_exception'
 
-# Default description change it
+# Родительский класс для валидаторов с базовым функционалом проверок
 class Validator
   def between?(min, value, max, field)
     not_nil?(value, field)

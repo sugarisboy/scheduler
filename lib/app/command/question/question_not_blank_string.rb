@@ -2,11 +2,11 @@
 
 require 'tty-prompt'
 require_relative 'question'
-require_relative '../../../api/bean/bean'
 require_relative '../../service/printer_service'
 require_relative '../../validators/data_validator'
+require_relative '../../../api/bean/bean'
 
-# Default description change it
+# Вопрос о вводе непустой строки
 class QuestionNotBlankString < Question
   include Bean
 

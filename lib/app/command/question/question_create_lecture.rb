@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
-require_relative '../../../api/bean/bean'
-require_relative '../../../api/exception/validation_exception'
-require_relative '../../validators/data_validator'
 require_relative 'question'
+require_relative '../../validators/data_validator'
+require_relative '../../../api/bean/bean'
 
-# Default description change it
+# Вопрос о создаваемой лекции
 class QuestionCreateLecture < Question
   include Bean
 

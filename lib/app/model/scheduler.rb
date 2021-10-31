@@ -2,7 +2,7 @@
 
 require_relative 'day_scheduler'
 
-# Scheduler
+# Сущность: Календарь
 class Scheduler
   include Enumerable
 
@@ -18,14 +18,11 @@ class Scheduler
     @data.freeze
   end
 
-  def day(day_week)
-    @data.key?(day_week) ? @data[day_week] : nil
-  end
-
   def to_s
     "#{self.class.name}[data=#{data}]"
   end
 
+  # Основной методя для становления Enumerable
   def each
     raise 'Need block' unless block_given?
 
@@ -38,18 +35,7 @@ class Scheduler
     end
   end
 
-  #  def each
-  #    raise 'Need block' unless block_given?
-  #
-  #    @data.each_pair do |day_week, day_data|
-  #      day_data.data.each_pair do |num_lecture, lectures|
-  #        lectures.each do |lecture|
-  #          yield lecture, day_week, num_lecture
-  #        end
-  #      end
-  #    end
-  #  end
-
+  # Кастомный метод для поиск лекций с возвратом нового расписания
   def select_lecture
     raise 'Need block' unless block_given?
 
@@ -60,21 +46,4 @@ class Scheduler
 
     response
   end
-
-  #def map
-  #  raise 'Need block' unless block_given?
-  #
-  #  result = []
-  #  each do |lecture, day, num|
-  #    value = yield lecture, day, num
-  #    result << value
-  #  end
-  #  result
-  #end
-
-  #def count
-  #  count = 0
-  #  each { |_, _, _| count += 1 }
-  #  count
-  #end
 end

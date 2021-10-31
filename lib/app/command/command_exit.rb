@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'command'
-require_relative '../../api/bean/bean'
 require_relative 'question/question_week_day'
 require_relative 'question/question_num_lecture'
 require_relative 'question/question_create_lecture'
 require_relative '../service/printer_service'
+require_relative '../../api/bean/bean'
 
-# Command count patients info
+# Комманда завершения работы
 class CommandExit < Command
   include Bean
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Lecture
+# Сущность: Лекция
 class Lecture
   attr_accessor :subject, :cabinet, :groups, :lector
 

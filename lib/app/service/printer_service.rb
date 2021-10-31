@@ -4,7 +4,7 @@ require_relative '../../api/bean/bean'
 require_relative '../../api/utils/io_utils'
 require_relative '../service/scheduler_service'
 
-# Default description change it
+# Сервис для форматирования и печати сущностей
 class PrinterService
   include Bean
 
@@ -41,15 +41,6 @@ class PrinterService
     end
   end
 
-  #def print_day(day_week, day_scheduler)
-  #  msg = "#{BOLD_SEPARATOR} #{DAY_WEEK_TO_NAME[day_week]} #{BOLD_SEPARATOR}"
-  #  puts IOUtils.as_green(msg)
-  #  numbered_lectures = day_scheduler.data
-  #  numbered_lectures.each_pair do |num_lecture, lectures|
-  #    print_lectures(num_lecture, lectures)
-  #  end
-  #end
-
   def print_lectures(num_lecture, lectures)
     return if lectures.count.zero?
 
@@ -65,20 +56,6 @@ class PrinterService
 
     lectures.each { |lecture| print_lecture(lecture) }
   end
-
-  #def print_lectures(num_lecture, lectures)
-  #  return if lectures.empty?
-  #
-  #  msg = "#{SEPARATOR} #{num_lecture} пары #{SEPARATOR}"
-  #  puts IOUtils.as_aqua(msg)
-  #  msg = format_as_table(
-  #    TABLE_TEMPLATE,
-  #    'каб', 'Дисциплина', 'Преподаватель', 'Группы'
-  #  )
-  #  puts IOUtils.as_aqua(msg)
-  #
-  #  lectures.each { |lecture| print_lecture(lecture) }
-  #end
 
   def print_lecture(lecture)
     puts format_lecture(lecture)

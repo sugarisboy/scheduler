@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Subject
+# Сущность: День каледаря
 class DayScheduler
   attr_reader :data
 

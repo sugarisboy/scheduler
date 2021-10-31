@@ -2,11 +2,10 @@
 
 require 'tty-prompt'
 require_relative 'question'
-require_relative '../../../api/bean/bean'
-require_relative '../../service/printer_service'
 require_relative '../../validators/data_validator'
+require_relative '../../../api/bean/bean'
 
-# Default description change it
+# Вопрос о номере кабинета
 class QuestionCabinet < Question
   include Bean
 
@@ -14,11 +13,10 @@ class QuestionCabinet < Question
     @validator = inject(DataValidator)
   end
 
-  def ask(welcome = 'Введите номер кабинета: ', field = 'Номер кабинета')
+  def ask(welcome = 'Введите номер кабинета: ')
     input welcome do |line|
-      @validator.not_empty?(line, field)
-      @validator.positive?(line, field)
-      line
+      @validator.validate_cabinet(line)
+      line.to_i
     end
   end
 end
