@@ -12,8 +12,8 @@ class SchedulerRepository
 
   attr_reader :scheduler
 
-  def initialize
-    @scheduler = Scheduler.new
+  def initialize(scheduler = Scheduler.new)
+    @scheduler = scheduler
   end
 
   def injections
