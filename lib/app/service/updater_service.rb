@@ -3,7 +3,8 @@
 require_relative '../service/scheduler_service'
 require_relative '../../../lib/api/bean/bean'
 require_relative '../../../lib/api/exception/business_exception'
-# Default description change it
+
+# Сервис обновлятор расписания
 class UpdaterService
   include Bean
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../lib/app/service/scheduler_service'
 require_relative '../../../lib/app/service/lector_service'
 require_relative '../../../lib/app/repository/scheduler_repository'
@@ -141,9 +143,9 @@ RSpec.describe SchedulerService do
     day_week = 1
     num_lecture = 3
     allow(query_builder).to receive(:day_week).with(day_week)
-                                               .and_return(query_builder)
+                                              .and_return(query_builder)
     allow(query_builder).to receive(:num_lecture).with(num_lecture)
-                                               .and_return(query_builder)
+                                                 .and_return(query_builder)
 
     result = service.lectures_by_time(day_week, num_lecture)
     expect(result).to_not be_nil

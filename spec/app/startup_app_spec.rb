@@ -5,7 +5,6 @@ require 'tty/prompt/test'
 require_relative '../context'
 require_relative '../../lib/scheduler_app'
 
-# Default description change it
 RSpec.describe SchedulerApp do
   let(:prompt) { TTY::Prompt::Test.new }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../context'
 require_relative '../../../lib/app/service/printer_service'
 require_relative '../../../lib/app/repository/scheduler_repository'
@@ -34,7 +36,7 @@ RSpec.describe PrinterService do
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m\n" \
       "\e[36m  каб │                              Дисципл" \
       "ина │       Преподаватель │Группы\e[0m\n" \
-      "  101 │                               Subject 2 │ " \
+      '  101 │                               Subject 2 │ ' \
       "            lector2 │GR-1,GR-2\n" \
       "\e[32m================================= Четверг ==" \
       "===============================\e[0m\n" \
@@ -44,7 +46,7 @@ RSpec.describe PrinterService do
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m\n" \
       "\e[36m  каб │                              Дисципл" \
       "ина │       Преподаватель │Группы\e[0m\n" \
-      "  102 │                               Subject 3 │ " \
+      '  102 │                               Subject 3 │ ' \
       "            lector1 │GR-3,GR-2\n" \
       "\e[32m================================= Суббота ==" \
       "===============================\e[0m\n"
@@ -57,7 +59,7 @@ RSpec.describe PrinterService do
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m\n" \
       "\e[36m  каб │                              Дисципли" \
       "на │       Преподаватель │Группы\e[0m\n" \
-      "  101 │                               Subject 1 │  " \
+      '  101 │                               Subject 1 │  ' \
       "           lector1 │GR-1,GR-2\n"
   end
 
@@ -66,7 +68,8 @@ RSpec.describe PrinterService do
   end
 
   it 'Should print day' do
-    expect { service.print_day(1, scheduler.data[1]) }.to output(monday).to_stdout
+    expect { service.print_day(1, scheduler.data[1]) }.to output(monday)
+      .to_stdout
   end
 
   [

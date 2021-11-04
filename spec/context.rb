@@ -2,7 +2,7 @@
 
 require_relative '../lib/api/context'
 
-# Default description change it
+# Тестовый контекст
 class TestContext < Context
   def bean(type, value)
     @bean_factory.primary(type, value)

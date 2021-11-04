@@ -5,6 +5,7 @@ require_relative 'question/question_week_day'
 require_relative 'question/question_num_lecture'
 require_relative 'question/question_create_lecture'
 require_relative '../service/scheduler_service'
+require_relative '../model/lecture'
 require_relative '../../api/bean/bean'
 
 # Команда для добавления элемента в расписание

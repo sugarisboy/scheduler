@@ -8,7 +8,6 @@ require_relative '../../../lib/app/command/command_change_cabinet'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/api/exception/business_exception'
 
-# Default description change it
 RSpec.describe CommandChangeCabinet do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandChangeCabinet) }
@@ -43,7 +42,8 @@ RSpec.describe CommandChangeCabinet do
 
     expect(1).to eq(repository.scheduler.count)
 
-    prompt.input << "\n" << 'd' << "\n" << "\n" # 1 day, 2 lecture, first lecture
+    # 1 day, 2 lecture, first lecture
+    prompt.input << "\n" << 'd' << "\n" << "\n"
     prompt.input.rewind
     new_cabinet = 105
 
@@ -70,7 +70,8 @@ RSpec.describe CommandChangeCabinet do
 
     expect(2).to eq(repository.scheduler.count)
 
-    prompt.input << "\n" << 'd' << "\n" << "\n" # 1 day, 2 lecture, first lecture
+    # 1 day, 2 lecture, first lecture
+    prompt.input << "\n" << 'd' << "\n" << "\n"
     prompt.input.rewind
 
     old_cabinet = lecture.cabinet

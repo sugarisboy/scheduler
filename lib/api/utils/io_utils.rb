@@ -16,7 +16,7 @@ module IOUtils
 
   def self.write_csv(local_path, sep, data)
     path = File.expand_path(local_path, __dir__)
-    CSV.open(path, "wb", col_sep: sep) do |csv|
+    CSV.open(path, 'wb', col_sep: sep) do |csv|
       data.each { |row| csv << row }
     end
   end

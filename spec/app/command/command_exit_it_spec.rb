@@ -5,7 +5,6 @@ require 'tty/prompt/test'
 require_relative '../../context'
 require_relative '../../../lib/app/command/command_exit'
 
-# Default description change it
 RSpec.describe CommandExit do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandExit) }

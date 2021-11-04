@@ -2,9 +2,7 @@
 
 require_relative '../../../lib/app/validators/validator'
 
-# Default description change it
 RSpec.describe CommandPrintCriteria do
-
   let(:validator) { Validator.new }
 
   [
@@ -47,7 +45,7 @@ RSpec.describe CommandPrintCriteria do
     ['', false],
     ['   ', false],
     ["\n", false],
-    ['aaaaa', true ],
+    ['aaaaa', true],
     ['  a dsa asd  ', true]
   ].each do |value, success|
     it 'Should validate not empty' do

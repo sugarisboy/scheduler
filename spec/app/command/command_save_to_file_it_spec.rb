@@ -6,7 +6,6 @@ require_relative '../../context'
 require_relative '../../../lib/app/config/env_config'
 require_relative '../../../lib/app/command/command_save_to_file'
 
-1# Default description change it
 RSpec.describe CommandSaveToFile do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandSaveToFile) }

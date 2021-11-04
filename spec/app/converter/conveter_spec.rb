@@ -4,7 +4,6 @@ require 'tempfile'
 require_relative '../../../lib/app/config/env_config'
 require_relative '../../../lib/app/converter/model_file_converter'
 
-# Default description change it
 RSpec.describe ModelFileConverter do
   let(:converter) { context.instance(ModelFileConverter) }
   let(:repository) { context.inject(SchedulerRepository) }

@@ -12,7 +12,7 @@ module Bean
   # P. S. Принимает в качестве аргумента контекст,
   # к которому привязывается для дальнейшего использования
   def register_bean(context)
-    Log.level = Logger::INFO
+    Log.level = Logger::ERROR
     Log.info("Register bean #{self.class.name}")
     @context = context
     context.add_bean(self)

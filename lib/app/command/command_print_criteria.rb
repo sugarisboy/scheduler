@@ -44,8 +44,8 @@ class CommandPrintCriteria < Command
       filtered_scheduler = select_by_cabinet
     when :time
       filtered_scheduler = select_by_time
-    #else
-    #  raise BusinessException, "Не найдено значение фильтра #{filter}"
+      # else
+      #   raise BusinessException, "Не найдено значение фильтра #{filter}"
     end
 
     @printer.print_all(filtered_scheduler)

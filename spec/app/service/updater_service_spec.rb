@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../lib/app/model/lecture'
 require_relative '../../../lib/app/service/updater_service'
 require_relative '../../../lib/app/service/scheduler_service'

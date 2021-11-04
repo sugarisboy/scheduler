@@ -8,7 +8,6 @@ require_relative '../../../lib/app/command/command_print_all'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/api/exception/business_exception'
 
-# Default description change it
 RSpec.describe CommandPrintAll do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandPrintAll) }
@@ -40,11 +39,13 @@ RSpec.describe CommandPrintAll do
 
   [
     /.*107\s*│\s*Subject 2\s*│\s*lector Y\s*│\s*TM-3,TM-4.*/,
-    /.*106\s*│\s*Subject 1\s*│\s*lector X\s*│\s*TM-1,TM-2.*/,
+    /.*106\s*│\s*Subject 1\s*│\s*lector X\s*│\s*TM-1,TM-2.*/
   ].each do |line|
     it 'should print all lectures many lectures' do
       repository.save_lecture(1, 2, lecture1)
       repository.save_lecture(3, 4, lecture2)
+
+      expect { command.execute }.to output(line).to_stdout
     end
   end
 

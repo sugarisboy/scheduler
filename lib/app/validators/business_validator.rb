@@ -2,7 +2,7 @@
 
 require_relative '../../api/bean/bean'
 
-# Default description change it
+# Валидирует бизнес валидации
 class BusinessValidator
   include Bean
 

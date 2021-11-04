@@ -8,7 +8,6 @@ require_relative '../../../lib/app/command/command_print_criteria'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/api/exception/business_exception'
 
-# Default description change it
 RSpec.describe CommandPrintCriteria do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandPrintCriteria) }
@@ -61,15 +60,13 @@ RSpec.describe CommandPrintCriteria do
     ["dd\n", "108\n", nil, /.*106\s*│/],
     # Тест по времени
     ["ddd\n\nd\n", 'not used', /.*106\s*│/, /.*107\s*│/],
-    ["ddd\ndd\ndddd\n", 'not used', /.*107\s*│/, /.*106\s*│/],
+    ["ddd\ndd\ndddd\n", 'not used', /.*107\s*│/, /.*106\s*│/]
   ].each do |prompt_input, line_input, include, exclude|
     it 'Should print by criteria' do
       repository.save_lecture(1, 2, lecture1)
       repository.save_lecture(3, 5, lecture2)
 
-      pp repository.scheduler
-
-      prompt.input << prompt_input * 2
+      prompt.input << (prompt_input * 2)
       prompt.input.rewind
 
       $stdin = StringIO.new(line_input * 2)

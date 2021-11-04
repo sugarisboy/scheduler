@@ -7,7 +7,6 @@ require_relative '../../../lib/app/command/command_add_element'
 require_relative '../../../lib/api/exception/business_exception'
 require_relative '../../../lib/app/repository/scheduler_repository'
 
-# Default description change it
 RSpec.describe CommandAddElement do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandAddElement) }

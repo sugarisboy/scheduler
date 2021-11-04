@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../lib/app/repository/scheduler_query'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/app/validators/data_validator'
@@ -34,7 +36,7 @@ RSpec.describe SchedulerRepository do
   it 'should save with validate num lecture exception in storage' do
     validator = context.inject(DataValidator)
     allow(validator).to receive(:validate_num_lecture)
-                          .and_raise(ValidationException)
+      .and_raise(ValidationException)
 
     day_week = 1
     num_lecture = 3
@@ -52,7 +54,7 @@ RSpec.describe SchedulerRepository do
   it 'should save with validate day week exception in storage' do
     validator = context.inject(DataValidator)
     allow(validator).to receive(:validate_day_week)
-                          .and_raise(ValidationException)
+      .and_raise(ValidationException)
 
     day_week = 1
     num_lecture = 3
@@ -79,9 +81,9 @@ RSpec.describe SchedulerRepository do
     repository.save_lecture(day_week, num_lecture, lecture)
 
     criteria = [
-      Proc.new { |_lecture, day, _num| day == 1 },
-      Proc.new { |_lecture, _day, num| num == 3 },
-      Proc.new { |lecture, _day, _num| lecture.cabinet == 101 }
+      proc { |_lecture, day, _num| day == 1 },
+      proc { |_lecture, _day, num| num == 3 },
+      proc { |lec, _day, _num| lec.cabinet == 101 }
     ]
 
     query_result = repository.find_by_criteria(criteria).first

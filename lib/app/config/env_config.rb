@@ -2,7 +2,7 @@
 
 require_relative '../../api/bean/bean'
 
-# Default description change it
+# Класс конфигурация для переменных
 class EnvConfig
   include Bean
 

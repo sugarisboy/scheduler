@@ -8,7 +8,6 @@ require_relative '../../../lib/app/command/command_get_workload'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/api/exception/business_exception'
 
-# Default description change it
 RSpec.describe CommandGetWorkload do
   let(:prompt) { TTY::Prompt::Test.new }
   let(:command) { context.instance(CommandGetWorkload) }
