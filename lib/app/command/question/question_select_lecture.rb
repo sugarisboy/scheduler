@@ -2,8 +2,9 @@
 
 require 'tty-prompt'
 require_relative 'question'
-require_relative '../../../api/bean/bean'
 require_relative '../../service/printer_service'
+require_relative '../../../api/bean/bean'
+require_relative '../../../api/exception/business_exception'
 
 # Вопрос о выборе лекции
 class QuestionSelectLecture < Question
@@ -21,6 +22,8 @@ class QuestionSelectLecture < Question
         value: lecture
       }
     end
+
+    raise BusinessException, 'Лекции не найдены' if choices.empty?
 
     @prompt.select('Выберите лекцию: ', choices)
   end

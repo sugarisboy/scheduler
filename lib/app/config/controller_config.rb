@@ -11,6 +11,7 @@ require_relative '../command/command_print_criteria'
 require_relative '../command/command_find_retake'
 require_relative '../command/command_get_workload'
 require_relative '../command/command_change_cabinet'
+require_relative '../command/command_save_to_file'
 
 # Файл конфигурации для кантроллера
 class ControllerConfig
@@ -27,6 +28,7 @@ class ControllerConfig
       inject(CommandPrintCriteria),
       inject(CommandFindRetake),
       inject(CommandGetWorkload),
+      inject(CommandSaveToFile),
       inject(CommandExit)
     ]
   end

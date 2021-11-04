@@ -2,6 +2,7 @@
 
 require 'tty-prompt'
 require_relative 'question'
+require_relative '../../model/lecture'
 require_relative '../../validators/data_validator'
 require_relative '../../../api/bean/bean'
 

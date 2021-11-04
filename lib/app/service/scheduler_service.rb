@@ -45,7 +45,7 @@ class SchedulerService
 
   def delete_lecture(lecture)
     info_about_removable = @repository.find_lecture(lecture, extend: true)
-    raise "Not fount lecture: #{lecture}" if info_about_removable.nil?
+    raise "Not found lecture: #{lecture}" if info_about_removable.nil?
 
     deleted = @repository.delete_lecture(
       info_about_removable[:day_week],
@@ -57,32 +57,8 @@ class SchedulerService
     info_about_removable
   end
 
-  def update_time(lecture, new_day, new_num)
-    deleted = delete_lecture(lecture)
-
-    begin
-      add_lecture(new_day, new_num, lecture)
-    rescue StandardError => e
-      add_lecture(deleted[:day_week], deleted[:num_lecture], lecture)
-      raise BusinessException, "Ошибка при изменении времени для лекции: #{e}"
-    end
-  end
-
-  def update(lecture)
-    raise 'Use block for update lecture' unless block_given?
-
-    deleted = delete_lecture(lecture)
-    old = deleted[:instance]
-
-    changeable = Lecture.new(old.subject, old.cabinet, old.groups, old.lector)
-    yield changeable
-
-    begin
-      add_lecture(deleted[:day_week], deleted[:num_lecture], changeable)
-    rescue StandardError => e
-      add_lecture(deleted[:day_week], deleted[:num_lecture], lecture)
-      raise BusinessException, "Ошибка при изменении данных лекции: #{e}"
-    end
+  def find
+    @repository.scheduler
   end
 
   def lectures_by_time(week_day, num_lecture)
@@ -90,10 +66,6 @@ class SchedulerService
                .day_week(week_day)
                .num_lecture(num_lecture)
                .result
-  end
-
-  def find
-    @repository.scheduler
   end
 
   def find_by_group(group)

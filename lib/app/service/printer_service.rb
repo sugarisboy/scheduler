@@ -12,9 +12,9 @@ class PrinterService
     @service = inject(SchedulerService)
   end
 
-  TABLE_TEMPLATE = '%<cabinet>5s |%<subject>40s |%<lector>20s |%<groups>s'
+  TABLE_TEMPLATE = '%<cabinet>5s │%<subject>40s │%<lector>20s │%<groups>s'
 
-  SEPARATOR = '-----------------------------------'
+  SEPARATOR = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
   BOLD_SEPARATOR = '================================='
 
   DAY_WEEK_TO_NAME = {

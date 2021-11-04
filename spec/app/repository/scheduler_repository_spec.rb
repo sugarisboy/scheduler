@@ -1,4 +1,3 @@
-require_relative '../../context'
 require_relative '../../../lib/app/repository/scheduler_query'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/app/validators/data_validator'

@@ -2,12 +2,13 @@
 
 require 'stringio'
 require 'tty/prompt/test'
-require_relative '../context'
-require_relative '../../lib/scheduler_app'
+require_relative '../../context'
+require_relative '../../../lib/app/command/command_exit'
 
 # Default description change it
-RSpec.describe SchedulerApp do
+RSpec.describe CommandExit do
   let(:prompt) { TTY::Prompt::Test.new }
+  let(:command) { context.instance(CommandExit) }
 
   let(:context) do
     TestContext.new
@@ -21,11 +22,15 @@ RSpec.describe SchedulerApp do
     end
   end
 
-  it 'Should startup application' do
-    # 8 Раз вниз и выход из приложения
-    prompt.input << "dddd\nddddddddd\n"
+  after do
+    $stdin = STDIN
+  end
+
+  it 'should exit from app' do
+    prompt.input << "\n"
     prompt.input.rewind
-    app = SchedulerApp.new(context)
-    expect(app).to_not be_nil
+
+    expect(command.end_session?).to eq(true)
+    expect { command.execute }.to raise_error(NotImplementedError)
   end
 end

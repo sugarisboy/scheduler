@@ -18,10 +18,6 @@ class Scheduler
     @data.freeze
   end
 
-  def to_s
-    "#{self.class.name}[data=#{data}]"
-  end
-
   # Основной методя для становления Enumerable
   def each
     raise 'Need block' unless block_given?

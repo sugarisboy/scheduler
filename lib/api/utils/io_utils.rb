@@ -4,17 +4,21 @@ require 'csv'
 
 # Модуль для работы с вводом и выводом данных
 module IOUtils
-  DATA_DIR = '../../../data'
-
-  def self.read_csv(file_name, sep)
-    text = read_file(file_name)
+  def self.read_csv(local_path, sep)
+    text = read_file(local_path)
     CSV.parse(text, col_sep: sep, headers: true)
   end
 
-  def self.read_file(file_name)
-    local_path = "#{DATA_DIR}/#{file_name}"
+  def self.read_file(local_path)
     path = File.expand_path(local_path, __dir__)
     File.read(path, encoding: 'utf-8')
+  end
+
+  def self.write_csv(local_path, sep, data)
+    path = File.expand_path(local_path, __dir__)
+    CSV.open(path, "wb", col_sep: sep) do |csv|
+      data.each { |row| csv << row }
+    end
   end
 
   def self.as_pink(str)

@@ -13,8 +13,4 @@ class DayScheduler
 
     @data.freeze
   end
-
-  def to_s
-    "#{self.class.name}[data=#{data}]"
-  end
 end

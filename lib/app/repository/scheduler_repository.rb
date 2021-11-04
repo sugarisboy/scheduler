@@ -28,6 +28,7 @@ class SchedulerRepository
     day = @scheduler.data[day_week]
     num = day.data[num_lecture]
     num << lecture
+    lecture
   end
 
   # Вовзращает билдер запроса с критериями

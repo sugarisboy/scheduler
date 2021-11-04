@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative '../../../api/utils/io_utils'
+require_relative '../../../api/exception/validation_exception'
+
 # Родительский класс для вопросов
 # Состоит из осмысленного вопроса и валидации ответов
 # в случае необходимостиЮ, служит помошником для комманд

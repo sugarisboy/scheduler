@@ -36,16 +36,16 @@ class CommandPrintCriteria < Command
     filter = @question_select_filter.ask
 
     case filter
+    when :lector
+      filtered_scheduler = select_by_lector
     when :group
       filtered_scheduler = select_by_group
     when :cabinet
       filtered_scheduler = select_by_cabinet
-    when :lector
-      filtered_scheduler = select_by_lector
     when :time
       filtered_scheduler = select_by_time
-    else
-      raise BusinessException, "Не найдено значение фильтра #{filter}"
+    #else
+    #  raise BusinessException, "Не найдено значение фильтра #{filter}"
     end
 
     @printer.print_all(filtered_scheduler)

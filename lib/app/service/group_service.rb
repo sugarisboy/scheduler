@@ -13,7 +13,6 @@ class GroupService
   # Поиск всех групп в раписании
   def find_groups(scheduler = @repository.scheduler)
     groups = scheduler.flat_map do |lecture, _, _|
-      pp lecture
       lecture.groups
     end
 

@@ -1,4 +1,3 @@
-require_relative '../../context'
 require_relative '../../../lib/app/service/group_service'
 require_relative '../../../lib/app/repository/scheduler_repository'
 require_relative '../../../lib/app/model/lecture'

@@ -10,9 +10,4 @@ class Lecture
     @groups = groups
     @lector = lector
   end
-
-  def to_s
-    "#{self.class.name}" \
-      "[subj=#{subject},cab=#{cabinet},groups=#{groups},lector=#{lector}]"
-  end
 end

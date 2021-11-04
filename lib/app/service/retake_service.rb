@@ -10,10 +10,6 @@ class RetakeService
 
   attr_accessor :day_count
 
-  def initialize
-    @day_count = 6
-  end
-
   def injections
     @lector_service = inject(LectorService)
     @repository = inject(SchedulerRepository)
@@ -24,7 +20,7 @@ class RetakeService
     cabinets = @lector_service.find_cabinets(lector)
 
     # Для каждого дня попытаемся найти время для пересдачи
-    (1..@day_count).each do |day|
+    (1..6).each do |day|
       result = find_retake_time_in_day(day, lector, groups, cabinets)
       return result unless result.nil?
     end

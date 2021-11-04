@@ -4,11 +4,12 @@ require_relative '../model/day_scheduler'
 require_relative '../model/scheduler'
 require_relative '../model/lecture'
 require_relative '../service/scheduler_service'
+require_relative '../config/env_config'
 require_relative '../../api/utils/io_utils'
 require_relative '../../../lib/api/bean/bean'
 
 # Класс для чтения данных из файла
-class ModelReader
+class ModelFileConverter
   include Bean
 
   # Название колонок в файле
@@ -20,16 +21,16 @@ class ModelReader
   GROUPS = 'GROUPS'
 
   # Параметры файла
-  FILE = 'data.csv'
   SEPARATOR = ';'
 
   def injections
+    @envs = inject(EnvConfig)
     @service = inject(SchedulerService)
   end
 
   # Запуск загрузки данных из файла
-  def load
-    csv_data = IOUtils.read_csv(FILE, SEPARATOR)
+  def read
+    csv_data = IOUtils.read_csv(local_path, SEPARATOR)
 
     csv_data.each do |row|
       week_day = parse_week_day(row)
@@ -70,5 +71,26 @@ class ModelReader
 
   def parse_cabinet(csv_line)
     csv_line[CABINET].strip.to_i
+  end
+
+  def convert_to_csv(scheduler)
+    header = [WEEK_DAY, NUM_LECTURE, TEACHER, SUBJECT, CABINET, GROUPS]
+    converted = scheduler.map do |lecture, day, num|
+      groups = lecture.groups.join(',')
+      [day, num, lecture.lector, lecture.subject, lecture.cabinet, groups]
+    end
+    converted.unshift(header)
+    converted
+  end
+
+  def write(scheduler)
+    data = convert_to_csv(scheduler)
+    IOUtils.write_csv(local_path, SEPARATOR, data)
+  end
+
+  private
+
+  def local_path
+    "#{@envs.data_dir}/#{@envs.file}"
   end
 end
