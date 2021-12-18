@@ -50,6 +50,67 @@
 
 <div class="grid-x">
   <div class="cell small-6">
+
+    <% scheduler.data.each_pair do |day_week, day_data| %>
+
+      <h3>День недели: <%= day_week %></h3>
+
+      <table>
+        <thead>
+
+        <tr>
+          <th>Кабинет</th>
+          <th>Предмет</th>
+          <th>Преподаватель</th>
+          <th>Группы</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+
+        <% day_data.sorted_data.each_pair do |num_lecture, lectures| %>
+          <tr style="background-color: #f7cfcf">
+            <td><b> <%= num_lecture %> </b></td>
+            <td><b> лекция </b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <% lectures.each do |lecture| %>
+            <tr>
+              <td> <%= lecture.cabinet %> </td>
+              <td> <%= lecture.subject %> </td>
+              <td> <%= lecture.lector %> </td>
+              <td> <%= lecture.groups.join(', ') %> </td>
+              <td>
+                <form action="/scheduler/move?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                  <button class="secondary button" type="button">ПЕРЕНЕСТИ</button>
+                </form>
+              </td>
+
+              <td>
+                <form action="/scheduler/edit?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                  <button class="warning button" type="submit">ИЗМЕНИТЬ</button>
+                </form>
+              </td>
+
+              <td>
+                <form action="/scheduler/remove?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                  <button class="alert button" type="submit">УДАЛИТЬ</button>
+                </form>
+              </td>
+
+            </tr>
+          <% end %>
+        <% end %>
+
+      </table>
+    <% end %>
+
+    <!--
     <table>
       <thead>
       <tr>
@@ -64,37 +125,54 @@
         <th></th>
       </tr>
       </thead>
+
+      <div>
+        /*
+        @data.each_pair do |day_week, day_data|
+        day_data.data.each_pair do |num_lecture, lectures|
+        lectures.each do |lecture|
+        yield lecture, day_week, num_lecture
+        end
+        end
+        end
+        */
+
+      </div>
+
+
       <tbody>
-      <% scheduler.each do |lecture, day, num| %>
+      <%# scheduler.each do |lecture, day, num| %>
         <tr>
-          <td> <%= day %> </td>
-          <td> <%= num %> </td>
-          <td> <%= lecture.cabinet %> </td>
-          <td> <%= lecture.subject %> </td>
-          <td> <%= lecture.lector %> </td>
-          <td> <%= lecture.groups.join(', ') %> </td>
+          <td> <%#= day %> </td>
+          <td> <%#= num %> </td>
+          <td> <%#= lecture.cabinet %> </td>
+          <td> <%#= lecture.subject %> </td>
+          <td> <%#= lecture.lector %> </td>
+          <td> <%#= lecture.groups.join(', ') %> </td>
           <td>
-            <form action="/scheduler/move?day=<%= day %>&num=<%= num %>&cabinet=<%= lecture.cabinet %>" method="post">
+            <form action="/scheduler/move?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
               <button class="secondary button" type="button">ПЕРЕНЕСТИ</button>
             </form>
           </td>
 
           <td>
-            <form action="/scheduler/edit?day=<%= day %>&num=<%= num %>&cabinet=<%= lecture.cabinet %>" method="post">
+            <form action="/scheduler/edit?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
               <button class="warning button" type="submit">ИЗМЕНИТЬ</button>
             </form>
           </td>
 
           <td>
-            <form action="/scheduler/remove?day=<%= day %>&num=<%= num %>&cabinet=<%= lecture.cabinet %>" method="post">
+            <form action="/scheduler/remove?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
               <button class="alert button" type="submit">УДАЛИТЬ</button>
             </form>
           </td>
 
         </tr>
-      <% end %>
+      <%# end %>
       </tbody>
     </table>
+-->
+
   </div>
 </div>
 

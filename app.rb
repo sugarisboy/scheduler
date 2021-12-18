@@ -108,7 +108,6 @@ class App < Roda
       num = r.params['num'].to_i
       cabinet = r.params['cabinet'].to_i
 
-      pp [day, num, cabinet]
       lecture = @service.delete_lecture_by_time(day, num, cabinet)
 
       if lecture.nil?
