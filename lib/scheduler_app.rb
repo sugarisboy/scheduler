@@ -21,6 +21,6 @@ class SchedulerApp < Application
   end
 
   def start
-    @controller.listen
+    #@controller.listen
   end
 end

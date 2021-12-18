@@ -11,7 +11,7 @@ class SchedulerQuery
   def cabinet(cabinet)
     where(
       lambda do |lecture, _, _|
-        lecture.cabinet.equal?(cabinet)
+        lecture.cabinet.equal?(cabinet.to_i)
       end
     )
   end

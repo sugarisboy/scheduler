@@ -9,6 +9,8 @@ require_relative 'exception/business_exception'
 class Application
   include Bean
 
+  attr_reader :context
+
   def initialize(context = Context.new)
     Log.info('- Stating application')
     @context = context

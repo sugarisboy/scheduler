@@ -83,4 +83,27 @@ class SchedulerService
   def find_by_cabinet(cabinet)
     @repository.find_all_lectures.cabinet(cabinet).result
   end
+
+  def delete_lecture_by_time(day_week, num_lecture, cabinet)
+    lectures = @repository
+              .find_all_lectures
+              .day_week(day_week)
+              .num_lecture(num_lecture)
+              .cabinet(cabinet)
+              .lectures
+
+    return if lectures.empty?
+
+    lecture = lectures[0]
+    delete_lecture(lecture)
+    lecture
+  end
+
+  def find_by_filters(lector, cabinet, group)
+    query = @repository.find_all_lectures
+    query = query.lector(lector) unless lector.empty?
+    query = query.cabinet(cabinet) unless cabinet.empty?
+    query = query.groups_in(group) unless group.empty?
+    query.result
+  end
 end
