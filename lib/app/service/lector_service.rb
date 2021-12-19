@@ -48,4 +48,12 @@ class LectorService
     Log.debug("Founded lectures for lector #{lector}: #{lectures_by_lector}")
     lectures_by_lector
   end
+
+  def find_workload(lector)
+    {
+      count: find_lectures(lector).count,
+      subjects: find_subjects(lector),
+      groups: find_groups(lector)
+    }
+  end
 end

@@ -39,6 +39,27 @@ class App < Roda
     r.hash_branches
   end
 
+
+
+  hash_branch('lectors') do |r|
+    append_view_subdir('lectors')
+    set_layout_options(template: '../views/layout')
+
+    @params = DryResultFormeAdapter.new(LectorWorkloadScheme.call(r.params))
+
+    r.get 'workload' do
+      context = opts[:app].context
+      @lector_service = context.inject(LectorService)
+      @lectors = @lector_service.find_lectors
+
+      if @params.success?
+        @workload = @lector_service.find_workload(@params[:lector])
+      end
+
+      view('lector_workload')
+    end
+  end
+
   hash_branch('scheduler') do |r|
     append_view_subdir('scheduler')
     set_layout_options(template: '../views/layout')
@@ -47,6 +68,7 @@ class App < Roda
     @service = context.inject(SchedulerService)
     @group_service = context.inject(GroupService)
     @lector_service = context.inject(LectorService)
+
 
     r.get 'list' do
       @params = DryResultFormeAdapter.new(FilterLectureScheme.call(r.params))

@@ -1,0 +1,38 @@
+<h1>Информация о загрузке</h1>
+
+<% form({ method: :get }, { obj: @params }) do |f| %>
+  <%= f.input(:lector, type: :select, label: 'Для преподавателя', options: @lectors) %>
+  <%= f.button(value: 'Поиск', class: 'success button') %>
+<% end %>
+
+<br/>
+<br/>
+
+<% if @params.success? %>
+  <div>
+    <b>Преподаватель: </b> <%= @params[:lector] %>
+    <br/><br/>
+    <b>Количество лекция в неделю:</b> <%= @workload[:count] %>
+    <br/><br/>
+    <b>Связанные дисциплины:</b>
+    <% @workload[:subjects].each do |subject| %>
+      <li>
+        <%= subject %>
+      </li>
+    <% end %>
+    <br/>
+    <b>Связанные группы:</b>
+    <% @workload[:groups].each do |group| %>
+      <li>
+        <%= group %>
+      </li>
+    <% end %>
+  </div>
+  <!--
+<%# else %>
+<div style="background-color: #8a1f11; color: #fff; padding: 8px">
+  <h2><b>Ошибка:</b></h2>
+  <h3>Преподатаватель не выбран</h3>
+</div>
+-->
+<% end %>
