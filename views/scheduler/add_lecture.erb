@@ -1,59 +1,111 @@
 <h1>Добавление лекции</h1>
 
-<% if @parameters && @parameters.key?('error') %>
+<% if @params && @params.key?('error') %>
   <div style="background-color: #8a1f11;color: white;padding: 8px">
-    <b>Ошибка: </b><%= @parameters['error'] %>
+    <b>Ошибка: </b><%= @params['error'] %>
   </div>
 <% end %>
 
-<form method="post">
+<% if @business_error %>
+  <div style="background-color: #8a1f11;color: white;padding: 8px">
+    <b>Ошибка: </b><%= @business_error %>
+  </div>
+<% end %>
+
+<% form({ method: :post }, { obj: @params }) do |f| %>
+  <%= f.input(:day_week, type: :number, placeholder: '1-6', label: 'День недели') %>
+  <%= f.input(:num_lecture, type: :number, placeholder: '1-6', label: 'Номер лекции') %>
+  <%= f.input(:subject, type: :text, placeholder: 'Математика', label: 'Название предмета') %>
+  <%= f.input(:lector, type: :text, placeholder: 'Иванов И. И.', label: 'ФИО преподатавеля') %>
+  <%= f.input(:cabinet, type: :number, placeholder: '101', label: 'Кабинет') %>
+  <%= f.input(:groups, type: :text, placeholder: 'EX-1, EX-2', label: 'Группы') %>
+  <%= f.button(value: 'OK', class: 'success button') %>
+<% end %>
+
+<!--<form method="post">
   <div>
     <div class="lagre-12 cell">
       <label>День недели
         <select name="day_week" id="day_week">
-          <option value="1" <% if @parameters && @parameters['day_week'] == '1' %> selected <% end %> >Понедельник</option>
-          <option value="2" <% if @parameters && @parameters['day_week'] == '2' %> selected <% end %> >Вторник</option>
-          <option value="3" <% if @parameters && @parameters['day_week'] == '3' %> selected <% end %> >Среда</option>
-          <option value="4" <% if @parameters && @parameters['day_week'] == '4' %> selected <% end %> >Четверг</option>
-          <option value="5" <% if @parameters && @parameters['day_week'] == '5' %> selected <% end %> >Пятница</option>
-          <option value="6" <% if @parameters && @parameters['day_week'] == '6' %> selected <% end %> >Суббота</option>
+          <option value="1"
+                  <%# if @parameters && @parameters['day_week'] == '1' %> selected
+                  <%# end %> >Понедельник
+          </option>
+          <option value="2"
+                  <%# if @parameters && @parameters['day_week'] == '2' %> selected
+                  <%# end %> >Вторник
+          </option>
+          <option value="3"
+                  <%# if @parameters && @parameters['day_week'] == '3' %> selected
+                  <%# end %> >Среда
+          </option>
+          <option value="4"
+                  <%# if @parameters && @parameters['day_week'] == '4' %> selected
+                  <%# end %> >Четверг
+          </option>
+          <option value="5"
+                  <%# if @parameters && @parameters['day_week'] == '5' %> selected
+                  <%# end %> >Пятница
+          </option>
+          <option value="6"
+                  <%# if @parameters && @parameters['day_week'] == '6' %> selected
+                  <%# end %> >Суббота
+          </option>
         </select>
       </label>
     </div>
     <div class="lagre-12 cell">
       <label>Номер лекции
         <select name="num_lecture" id="num_lecture">
-          <option value="1" <% if @parameters && @parameters['num_lecture'] == '1' %> selected <% end %> >Первая</option>
-          <option value="2" <% if @parameters && @parameters['num_lecture'] == '2' %> selected <% end %> >Вторая</option>
-          <option value="3" <% if @parameters && @parameters['num_lecture'] == '3' %> selected <% end %> >Третья</option>
-          <option value="4" <% if @parameters && @parameters['num_lecture'] == '4' %> selected <% end %> >Четвертая</option>
-          <option value="5" <% if @parameters && @parameters['num_lecture'] == '5' %> selected <% end %> >Пятая</option>
-          <option value="6" <% if @parameters && @parameters['num_lecture'] == '6' %> selected <% end %> >Шестая</option>
+          <option value="1"
+                  <%# if @parameters && @parameters['num_lecture'] == '1' %> selected
+                  <%# end %> >Первая
+          </option>
+          <option value="2"
+                  <%# if @parameters && @parameters['num_lecture'] == '2' %> selected
+                  <%# end %> >Вторая
+          </option>
+          <option value="3"
+                  <%# if @parameters && @parameters['num_lecture'] == '3' %> selected
+                  <%# end %> >Третья
+          </option>
+          <option value="4"
+                  <%# if @parameters && @parameters['num_lecture'] == '4' %> selected
+                  <%# end %> >Четвертая
+          </option>
+          <option value="5"
+                  <%# if @parameters && @parameters['num_lecture'] == '5' %> selected
+                  <%# end %> >Пятая
+          </option>
+          <option value="6"
+                  <%# if @parameters && @parameters['num_lecture'] == '6' %> selected
+                  <%# end %> >Шестая
+          </option>
         </select>
       </label>
     </div>
 
     <div class="lagre-12 cell">
       <label>Название предмета
-        <input type="text" placeholder="Математика" name="subject" value="<%= @parameters && @parameters['subject'] %>">
+        <input type="text" placeholder="Математика" name="subject" value="<%#= @parameters && @parameters['subject'] %>">
       </label>
     </div>
 
     <div class="lagre-12 cell">
       <label>ФИО преподатавеля
-        <input type="text" placeholder="Фамилия И. О." name="lector" value="<%= @parameters && @parameters['lector'] %>">
+        <input type="text" placeholder="Фамилия И. О." name="lector" value="<%#= @parameters && @parameters['lector'] %>">
       </label>
     </div>
 
     <div class="lagre-12 cell">
       <label>Кабинет
-        <input type="text" placeholder="№ кабинет" type="number" name="cabinet" value="<%= @parameters && @parameters['cabinet'] %>">
+        <input type="text" placeholder="№ кабинет" type="number" name="cabinet" value="<%#= @parameters && @parameters['cabinet'] %>">
       </label>
     </div>
 
     <div class="lagre-12 cell">
       <label>Группы
-        <input type="text" placeholder="ПРИМЕР-11, ПРИМЕР-12" type="number" name="groups" value="<%= @parameters && @parameters['groups'] %>">
+        <input type="text" placeholder="ПРИМЕР-11, ПРИМЕР-12" type="number" name="groups" value="<%#= @parameters && @parameters['groups'] %>">
       </label>
     </div>
 
@@ -64,4 +116,4 @@
       <input type="submit" value="Добавить" class="button success">
     </div>
   </div>
-</form>
+</form>-->

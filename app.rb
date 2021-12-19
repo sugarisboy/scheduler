@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'lib/scheduler_app'
 require 'roda'
+
+require_relative 'models'
+require_relative 'lib/scheduler_app'
 require_relative 'lib/api/bean/bean'
 require_relative 'lib/app/service/scheduler_service'
 require_relative 'lib/app/service/lector_service'
@@ -41,64 +43,52 @@ class App < Roda
     append_view_subdir('scheduler')
     set_layout_options(template: '../views/layout')
 
-    @parameters = {}
-    r.params.each { |k, v| @parameters[k] = v }
-
     context = opts[:app].context
     @service = context.inject(SchedulerService)
     @group_service = context.inject(GroupService)
     @lector_service = context.inject(LectorService)
 
     r.get 'list' do
-      view(
-        'lectures_list',
-        locals: {
-          scheduler: @service.find_by_filters(
-            @parameters['lector'] || '',
-            @parameters['cabinet'] || '',
-            @parameters['group'] || ''
-          ),
-          groups: @group_service.find_groups,
-          lectors: @lector_service.find_lectors
-        }
+      @params = DryResultFormeAdapter.new(FilterLectureScheme.call(r.params))
+
+      @scheduler = @service.find_by_filters(
+        @params[:lector],
+        @params[:cabinet],
+        @params[:group]
       )
+      @lectors = @lector_service.find_lectors
+      @groups = @group_service.find_groups
+
+      view('lectures_list')
     end
 
     r.on 'add' do
+      @params = DryResultFormeAdapter.new(AddLectureScheme.call(r.params))
+
       r.get do
-        view(
-          'add_lecture',
-          locals: { parameters: @parameters }
-        )
+        view('add_lecture')
       end
 
-      @data_validator = context.inject(DataValidator)
-
       r.post do
-        day_week = @parameters['day_week'].to_i
-        num_lecture = @parameters['num_lecture'].to_i
-        cabinet = @parameters['cabinet'].to_i
-        lector = @parameters['lector']
-        subject = @parameters['subject']
-        groups = @parameters['groups'].strip.gsub(' ', '').split(',')
+        day_week = @params[:day_week].to_i
+        num_lecture = @params[:num_lecture].to_i
+        cabinet = @params[:cabinet].to_i
+        lector = @params[:lector]
+        subject = @params[:subject]
+        groups = @params[:groups].strip.gsub(' ', '').split(',')
 
-        begin
-          @data_validator.validate_lector(lector)
-          @data_validator.validate_cabinet(cabinet)
-          @data_validator.validate_subject(subject)
-          @data_validator.validate_groups(groups)
+        if @params.success?
+          begin
+            lecture = Lecture.new(subject, cabinet, groups, lector)
+            @service.add_lecture(day_week, num_lecture, lecture)
 
-          lecture = Lecture.new(subject, cabinet, groups, lector)
-          @service.add_lecture(day_week, num_lecture, lecture)
-
-          r.redirect('list')
-        rescue StandardError => e
-          @parameters['error'] = e
-
-          view(
-            'add_lecture',
-            locals: { parameters: @parameters }
-          )
+            r.redirect('list')
+          rescue StandardError => e
+            @business_error = e
+            view('add_lecture')
+          end
+        else
+          view('add_lecture')
         end
       end
     end

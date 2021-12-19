@@ -1,19 +1,32 @@
 <h1>Полное расписание</h1>
 
-<form method="get">
+<% form({ method: :get }, { obj: @params }) do |f| %>
+  <div style="display: flex;flex-direction: row">
+  <%= f.input(:lector, type: :select, label: 'Фильтрация по преподавателю', options: @lectors, add_blank: true)%>
+  <%= f.input(:group, type: :select, label: 'Фильтрация по группе', options: @groups, add_blank: true)%>
+  <%= f.input(:cabinet, type: :number, label: 'Фильтрация по кабинету') %>
+    <label>
+      <br/>
+      <%= f.button(value: 'OK', class: 'success button') %>
+    </label>
+
+  </div>
+<% end %>
+
+<!--<form method="get">
   <div style="display: flex;flex-direction: row">
     <div>
       <label>
         Фильтрация по группам
         <select name="group" id="group">
           <option value="">-</option>
-          <% groups.each do |group| %>
-            <option value="<%= group %>"
-                    <% if @parameters['group'] == group %> selected
-                    <% end %> >
-              <%= group %>
+          <%# groups.each do |group| %>
+            <option value="<%#= group %>"
+                    <%# if @parameters['group'] == group %> selected
+                    <%# end %> >
+              <%#= group %>
             </option>
-          <% end %>
+          <%# end %>
         </select>
       </label>
     </div>
@@ -23,13 +36,13 @@
         Фильтрация по преподавателю
         <select name="lector" id="lector">
           <option value="">-</option>
-          <% lectors.each do |lector| %>
-            <option value="<%= lector %>"
-                    <% if @parameters['lector'] == lector %> selected
-                    <% end %> >
-              <%= lector %>
+          <%# lectors.each do |lector| %>
+            <option value="<%#= lector %>"
+                    <%# if @parameters['lector'] == lector %> selected
+                    <%# end %> >
+              <%#= lector %>
             </option>
-          <% end %>
+          <%# end %>
         </select>
       </label>
     </div>
@@ -37,7 +50,7 @@
     <div>
       <label>
         Фильтрация по кабинету
-        <input type="text" name="cabinet" value="<%= @parameters['cabinet'] %>"/>
+        <input type="text" name="cabinet" value="<%#= @parameters['cabinet'] %>"/>
       </label>
     </div>
 
@@ -46,12 +59,12 @@
       <button type="submit" class="success button">Применить</button>
     </label>
   </div>
-</form>
+</form>-->
 
 <div class="grid-x">
   <div class="cell small-6">
 
-    <% scheduler.data.each_pair do |day_week, day_data| %>
+    <% @scheduler.data.each_pair do |day_week, day_data| %>
 
       <h3>День недели: <%= day_week %></h3>
 
@@ -84,21 +97,21 @@
               <td> <%= lecture.cabinet %> </td>
               <td> <%= lecture.subject %> </td>
               <td> <%= lecture.lector %> </td>
-              <td> <%= lecture.groups.join(', ') %> </td>
+              <td> <%= lecture.groups_as_str %> </td>
               <td>
-                <form action="/scheduler/move?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                <form action="/scheduler/move?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
                   <button class="secondary button" type="button">ПЕРЕНЕСТИ</button>
                 </form>
               </td>
 
               <td>
-                <form action="/scheduler/edit?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                <form action="/scheduler/edit?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
                   <button class="warning button" type="submit">ИЗМЕНИТЬ</button>
                 </form>
               </td>
 
               <td>
-                <form action="/scheduler/remove?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
+                <form action="/scheduler/remove?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
                   <button class="alert button" type="submit">УДАЛИТЬ</button>
                 </form>
               </td>

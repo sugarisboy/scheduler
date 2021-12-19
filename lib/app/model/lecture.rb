@@ -10,4 +10,8 @@ class Lecture
     @groups = groups
     @lector = lector
   end
+
+  def groups_as_str
+    @groups.join(', ')
+  end
 end
