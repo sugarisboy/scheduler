@@ -1,0 +1,29 @@
+<h1>Поиск даты пересдачи</h1>
+
+<% form({ method: :get }, { obj: @params }) do |f| %>
+  <%= f.input(:lector, type: :select, label: 'Для преподавателя', options: @lectors) %>
+  <%= f.input(:groups, type: :text, placeholder: 'EX-1, EX-2', label: 'Для групп (через запятую)') %>
+  <%= f.button(value: 'Поиск', class: 'success button') %>
+<% end %>
+
+<br/>
+<br/>
+
+<% if @params.success? %>
+  <% unless @retake.empty? %>
+    <h3>Возможные даты пересдач</h3>
+    <% @retake.each do |retake| %>
+      <li>
+        <%= retake[:week_day_printed] %>,
+        <%= retake[:cabinet] %> кабинет,
+        <%= retake[:num_lectures][0] %> и <%= retake[:num_lectures][1] %>
+        лекция
+      </li>
+
+    <% end %>
+  <% else %>
+    Не найдено
+  <% end %>
+<% else %>
+  Неверные входные данные
+<% end %>

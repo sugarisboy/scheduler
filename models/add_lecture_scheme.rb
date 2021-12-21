@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Default description change it
+# TODO: Fix validation
 AddLectureScheme = Dry::Schema.Params do
   required(:day_week).filled(:integer)
   required(:num_lecture).filled(:integer)

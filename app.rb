@@ -8,6 +8,8 @@ require_relative 'lib/api/bean/bean'
 require_relative 'lib/app/service/scheduler_service'
 require_relative 'lib/app/service/lector_service'
 require_relative 'lib/app/service/group_service'
+require_relative 'lib/app/service/retake_service'
+require_relative 'lib/app/service/aggregator_wrapper'
 require_relative 'lib/app/validators/data_validator'
 
 # Main router
@@ -39,8 +41,6 @@ class App < Roda
     r.hash_branches
   end
 
-
-
   hash_branch('lectors') do |r|
     append_view_subdir('lectors')
     set_layout_options(template: '../views/layout')
@@ -60,6 +60,27 @@ class App < Roda
     end
   end
 
+  hash_branch('retake') do |r|
+    append_view_subdir('retake')
+    set_layout_options(template: '../views/layout')
+
+    context = opts[:app].context
+    @service = context.inject(RetakeService)
+    @lector_service = context.inject(LectorService)
+    @wrapper = context.inject(AggregatorWrapper)
+    @lectors = @lector_service.find_lectors
+
+    @params = DryResultFormeAdapter.new(FindRetakeScheme.call(r.params))
+
+    r.get do
+      if @params.success?
+        @retake = @wrapper.search_retakes(@params[:lector], @params[:groups])
+      end
+
+      view('retake_info')
+    end
+  end
+
   hash_branch('scheduler') do |r|
     append_view_subdir('scheduler')
     set_layout_options(template: '../views/layout')
@@ -68,7 +89,6 @@ class App < Roda
     @service = context.inject(SchedulerService)
     @group_service = context.inject(GroupService)
     @lector_service = context.inject(LectorService)
-
 
     r.get 'list' do
       @params = DryResultFormeAdapter.new(FilterLectureScheme.call(r.params))

@@ -101,7 +101,6 @@ class SchedulerService
 
   def find_by_filters(lector, cabinet, group)
     query = @repository.find_all_lectures
-    pp ['filters', lector, cabinet, group]
     query = query.lector(lector) if !lector.nil? && !lector.empty?
     query = query.cabinet(cabinet) if !cabinet.nil? && cabinet.to_i != 0
     query = query.groups_in(group) if !group.nil? && !group.empty?
