@@ -84,19 +84,17 @@ class SchedulerService
     @repository.find_all_lectures.cabinet(cabinet).result
   end
 
-  def delete_lecture_by_time(day_week, num_lecture, cabinet)
+  def find_by_time(day_week, num_lecture, cabinet)
     lectures = @repository
-              .find_all_lectures
-              .day_week(day_week)
-              .num_lecture(num_lecture)
-              .cabinet(cabinet)
-              .lectures
+                 .find_all_lectures
+                 .day_week(day_week)
+                 .num_lecture(num_lecture)
+                 .cabinet(cabinet)
+                 .lectures
 
     return if lectures.empty?
 
-    lecture = lectures[0]
-    delete_lecture(lecture)
-    lecture
+    lectures[0]
   end
 
   def find_by_filters(lector, cabinet, group)

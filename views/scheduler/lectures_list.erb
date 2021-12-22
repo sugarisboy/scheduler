@@ -30,7 +30,6 @@
           <th>Группы</th>
           <th></th>
           <th></th>
-          <th></th>
         </tr>
         </thead>
 
@@ -38,7 +37,6 @@
           <tr style="background-color: #f7cfcf">
             <td><b> <%= num_lecture %> </b></td>
             <td><b> лекция </b></td>
-            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -51,14 +49,8 @@
               <td> <%= lecture.lector %> </td>
               <td> <%= lecture.groups_as_str %> </td>
               <td>
-                <form action="/scheduler/move?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
-                  <button class="secondary button" type="button">ПЕРЕНЕСТИ</button>
-                </form>
-              </td>
-
-              <td>
-                <form action="/scheduler/edit?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
-                  <button class="warning button" type="submit">ИЗМЕНИТЬ</button>
+                <form action="/scheduler/move?old_day_week=<%= day_week %>&old_num_lecture=<%= num_lecture %>&old_cabinet=<%= lecture.cabinet %>" method="post">
+                  <button class="warning button" type="submit">ПЕРЕНЕСТИ</button>
                 </form>
               </td>
 

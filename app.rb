@@ -140,7 +140,7 @@ class App < Roda
       num = r.params['num'].to_i
       cabinet = r.params['cabinet'].to_i
 
-      lecture = @service.delete_lecture_by_time(day, num, cabinet)
+      lecture = @wrapper.delete_lecture(day, num, cabinet)
 
       if lecture.nil?
         view('lecture_not_found')
@@ -151,6 +151,32 @@ class App < Roda
         )
       end
     end
+
+    r.is 'move' do
+      @params = DryResultFormeAdapter.new(MoveLectureSchema.call(r.params))
+
+      context = opts[:app].context
+      @wrapper = context.inject(AggregatorWrapper)
+
+      if @params.success?
+        @response = @wrapper.move_lecture(
+          @params[:old_day_week], @params[:new_day_week],
+          @params[:old_num_lecture], @params[:new_num_lecture],
+          @params[:old_cabinet], @params[:new_cabinet]
+        )
+
+        if @response[:updated]
+          r.redirect('list')
+        end
+      end
+
+      @lecture = @wrapper.find_by_time(
+        @params[:old_day_week], @params[:old_num_lecture], @params[:old_cabinet]
+      )
+      @day_names = @wrapper.day_names
+
+      view('move_lecture')
+    end
   end
 
   hash_branch('menu') do |r|
@@ -158,4 +184,5 @@ class App < Roda
       view('menu')
     end
   end
+
 end

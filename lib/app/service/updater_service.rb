@@ -27,7 +27,7 @@ class UpdaterService
     end
   end
 
-  def update(lecture)
+  def update(lecture, new_day, new_num)
     raise 'Use block for update lecture' unless block_given?
 
     deleted = @scheduler_service.delete_lecture(lecture)
@@ -38,7 +38,7 @@ class UpdaterService
 
     begin
       @scheduler_service.add_lecture(
-        deleted[:day_week], deleted[:num_lecture], changeable
+        new_day, new_num, changeable
       )
     rescue StandardError => e
       @scheduler_service.add_lecture(
