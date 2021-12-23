@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require_relative '../model/ref_data'
+require_relative '../service/group_service'
 require_relative '../service/retake_service'
+require_relative '../service/lector_service'
 require_relative '../service/updater_service'
 require_relative '../service/scheduler_service'
 require_relative '../converter/model_file_converter'
@@ -16,52 +18,65 @@ class AggregatorWrapper
     @retake_service = inject(RetakeService)
     @scheduler_service = inject(SchedulerService)
     @updater_service = inject(UpdaterService)
+    @lector_service = inject(LectorService)
+    @group_service = inject(GroupService)
     @converter = inject(ModelFileConverter)
   end
 
   def search_retakes(raw_lector, raw_groups)
-    groups = split_arr(raw_groups)
     @retake_service
-      .find_retake_time(raw_lector, groups)
+      .find_retake_time(raw_lector, str_as_array(raw_groups))
       .map do |retake|
-      copy_hash_with_new_key(
-        retake,
-        :week_day_printed,
-        RefData.day_names[retake[:week_day]]
-      )
+      printed_name = day_names[retake[:week_day]]
+      retake.merge({ week_day_printed: printed_name })
     end
   end
 
-  def delete_lecture(week_day, num_lecture, cabinet)
-    lecture = find_by_time(week_day, num_lecture, cabinet)
-    @scheduler_service.delete_lecture(lecture)
-  end
-
-  # rubocop:disable Metrics/ParameterLists
   # Я считаю, что 6 аргументов это нормально
   # Здесь никак переменные нельзя с агрегировать, да
   # и не считаю нужным знать контроллеру (который вызывает этот метод)
   # о каких-то агрегациях
+  # rubocop:disable Metrics/ParameterLists
+  def create_lecture(day_week, num_lecture, cabinet, lector, subject, groups)
+    n_new_week_day = day_names.key(day_week)
+    lecture = Lecture.new(subject, cabinet.to_i, str_as_array(groups), lector)
+    created = @scheduler_service
+              .add_lecture(n_new_week_day, num_lecture.to_i, lecture)
+
+    { created: created }
+  rescue StandardError => e
+    marshal_error(e)
+  end
+
+  def delete_lecture(week_day, num_lecture, cabinet)
+    lecture = find_by_time(week_day, num_lecture, cabinet)
+    deleted = @scheduler_service.delete_lecture(lecture)
+    deleted.nil? ? nil : deleted[:instance]
+  end
+  # rubocop:enable Metrics/ParameterLists
+
+  # Я считаю, что 6 аргументов это нормально
+  # Здесь никак переменные нельзя с агрегировать, да
+  # и не считаю нужным знать контроллеру (который вызывает этот метод)
+  # о каких-то агрегациях
+  # rubocop:disable Metrics/ParameterLists
   def move_lecture(
     old_week_day, new_week_day,
     old_num_lecture, new_num_lecture,
     old_cabinet, new_cabinet
   )
     n_new_week_day = day_names.key(new_week_day)
-
     lecture = find_by_time(old_week_day, old_num_lecture, old_cabinet)
 
-    begin
-      updated = @updater_service
-                .update(lecture, n_new_week_day, new_num_lecture) do |changeable|
-        changeable.cabinet = new_cabinet
-      end
+    updated = @updater_service.update(
+      lecture, n_new_week_day, new_num_lecture
+    ) { |l| l.cabinet = new_cabinet }
 
-      { updated: updated }
-    rescue BusinessException => e
-      { business_error: e }
-    end
+    { updated: updated }
+  rescue BusinessException => e
+    marshal_error(e)
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def day_names
     RefData.day_names
@@ -77,7 +92,24 @@ class AggregatorWrapper
     @converter.write(scheduler)
   end
 
+  def find_all_lectors
+    @lector_service.find_lectors
+  end
+
+  def find_all_groups
+    @group_service.find_groups
+  end
+
+  def find_workload(lector)
+    @lector_service.find_workload(lector)
+  end
+
+  # -------------------------------------------
   private
+
+  def marshal_error(error)
+    { business_error: error }
+  end
 
   def copy_hash_with_new_key(copiable_hash, key, value)
     new_hash = copy_hash(copiable_hash)
@@ -94,7 +126,7 @@ class AggregatorWrapper
 
   # Представляем строку элементов через запятую, как массив
   # При этом удаляем все пробелы
-  def split_arr(raw_str)
+  def str_as_array(raw_str)
     raw_str.strip.gsub(' ', '').split(',')
   end
 end

@@ -8,7 +8,6 @@ gem 'dry-schema'
 gem 'forme'
 gem 'roda'
 gem 'tilt'
-gem 'tty-prompt'
 gem 'webrick'
 
 group :develop do

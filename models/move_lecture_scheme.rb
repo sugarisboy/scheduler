@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Default description change it
 MoveLectureSchema = Dry::Schema.Params do
   required(:old_day_week).filled(:integer, gteq?: 1, lteq?: 6)
   required(:new_day_week).filled(

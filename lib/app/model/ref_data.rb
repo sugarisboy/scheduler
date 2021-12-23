@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Default description change it
+# References data
 module RefData
   def self.day_names
     {

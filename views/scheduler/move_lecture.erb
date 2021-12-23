@@ -1,4 +1,4 @@
-<h1>Перенос занятия</h1>
+<h2>Перенос занятия</h2>
 
 <% if !@response.nil? && @response[:business_error] %>
   <div style="background-color: #8a1f11;color: white;padding: 8px">
@@ -7,7 +7,7 @@
 <% end %>
 
 <% unless @lecture.nil? %>
-  <% form({ method: :get }, { obj: @params }) do |f| %>
+  <% form({ method: :post }, { obj: @params }) do |f| %>
     <table>
       <thead>
       <tr>

@@ -1,4 +1,4 @@
-<h1>Полное расписание</h1>
+<h2>Просмотр расписания</h2>
 
 <% form({ method: :get }, { obj: @params }) do |f| %>
   <div style="display: flex;flex-direction: row">
@@ -15,10 +15,9 @@
 
 <div class="grid-x">
   <div class="cell small-6">
-
     <% @scheduler.data.each_pair do |day_week, day_data| %>
 
-      <h3>День недели: <%= day_week %></h3>
+      <h3><b> <%= @day_names[day_week] %> </b></h3>
 
       <table>
         <thead>
@@ -49,13 +48,19 @@
               <td> <%= lecture.lector %> </td>
               <td> <%= lecture.groups_as_str %> </td>
               <td>
-                <form action="/scheduler/move?old_day_week=<%= day_week %>&old_num_lecture=<%= num_lecture %>&old_cabinet=<%= lecture.cabinet %>" method="post">
+                <form action="/scheduler/change_time" method="get">
+                  <input name="old_day_week" value="<%= day_week %>" type="hidden"/>
+                  <input name="old_num_lecture" value="<%= num_lecture %>" type="hidden"/>
+                  <input name="old_cabinet" value="<%= lecture.cabinet %>" type="hidden"/>
                   <button class="warning button" type="submit">ПЕРЕНЕСТИ</button>
                 </form>
               </td>
 
               <td>
-                <form action="/scheduler/remove?day=<%= day_week %>&num=<%= num_lecture %>&cabinet=<%= lecture.cabinet %>" method="post">
+                <form action="/scheduler/delete" method="post">
+                  <input name="day" value="<%= day_week %>" type="hidden"/>
+                  <input name="num" value="<%= num_lecture %>" type="hidden"/>
+                  <input name="cabinet" value="<%= lecture.cabinet %>" type="hidden"/>
                   <button class="alert button" type="submit">УДАЛИТЬ</button>
                 </form>
               </td>
@@ -66,70 +71,6 @@
 
       </table>
     <% end %>
-
-    <!--
-    <table>
-      <thead>
-      <tr>
-        <th>День недели</th>
-        <th>Номер лекции</th>
-        <th>Кабинет</th>
-        <th>Предмет</th>
-        <th>Преподаватель</th>
-        <th>Группы</th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-      </thead>
-
-      <div>
-        /*
-        @data.each_pair do |day_week, day_data|
-        day_data.data.each_pair do |num_lecture, lectures|
-        lectures.each do |lecture|
-        yield lecture, day_week, num_lecture
-        end
-        end
-        end
-        */
-
-      </div>
-
-
-      <tbody>
-      <%# scheduler.each do |lecture, day, num| %>
-        <tr>
-          <td> <%#= day %> </td>
-          <td> <%#= num %> </td>
-          <td> <%#= lecture.cabinet %> </td>
-          <td> <%#= lecture.subject %> </td>
-          <td> <%#= lecture.lector %> </td>
-          <td> <%#= lecture.groups.join(', ') %> </td>
-          <td>
-            <form action="/scheduler/move?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
-              <button class="secondary button" type="button">ПЕРЕНЕСТИ</button>
-            </form>
-          </td>
-
-          <td>
-            <form action="/scheduler/edit?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
-              <button class="warning button" type="submit">ИЗМЕНИТЬ</button>
-            </form>
-          </td>
-
-          <td>
-            <form action="/scheduler/remove?day=<%#= day %>&num=<%#= num %>&cabinet=<%#= lecture.cabinet %>" method="post">
-              <button class="alert button" type="submit">УДАЛИТЬ</button>
-            </form>
-          </td>
-
-        </tr>
-      <%# end %>
-      </tbody>
-    </table>
--->
-
   </div>
 </div>
 

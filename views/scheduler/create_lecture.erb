@@ -1,13 +1,13 @@
-<h1>Добавление лекции</h1>
+<h2>Добавление лекции</h2>
 
-<% if @business_error %>
+<% if !@response.nil? && @response[:business_error] %>
   <div style="background-color: #8a1f11;color: white;padding: 8px">
-    <b>Ошибка: </b><%= @business_error %>
+    <b>Ошибка: </b><%= @response[:business_error] %>
   </div>
 <% end %>
 
 <% form({ method: :post }, { obj: @params }) do |f| %>
-  <%= f.input(:day_week, type: :number, placeholder: '1-6', label: 'День недели') %>
+  <%= f.input(:day_week, type: :select, placeholder: '1-6', label: 'День недели', options: @day_names.values) %>
   <%= f.input(:num_lecture, type: :number, placeholder: '1-6', label: 'Номер лекции') %>
   <%= f.input(:subject, type: :text, placeholder: 'Математика', label: 'Название предмета') %>
   <%= f.input(:lector, type: :text, placeholder: 'Иванов И. И.', label: 'ФИО преподатавеля') %>

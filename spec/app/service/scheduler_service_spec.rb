@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../../context'
 require_relative '../../../lib/app/service/scheduler_service'
 require_relative '../../../lib/app/service/lector_service'
 require_relative '../../../lib/app/repository/scheduler_repository'
@@ -104,7 +105,8 @@ RSpec.describe SchedulerService do
     repository = context.inject(SchedulerRepository)
     allow(repository).to receive(:find_lecture).and_return(nil)
 
-    expect { service.delete_lecture(lecture) }.to raise_error(RuntimeError)
+    result = service.delete_lecture(lecture)
+    expect(result).to be_nil
 
     expect(repository).not_to receive(:delete_lecture)
   end

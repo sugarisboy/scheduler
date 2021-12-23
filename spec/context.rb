@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../lib/api/context'
+require_relative '../lib/app/config/env_config'
 
 # Тестовый контекст
 class TestContext < Context
