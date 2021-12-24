@@ -73,14 +73,13 @@ class SchedulerWebApp
   end
 
   def change_time(req)
-    @params = {}
+    @params = DryResultFormeAdapter.new(MoveLectureSchema.call(req.params))
     @lecture = @wrapper.find_by_time(
       @params[:old_day_week], @params[:old_num_lecture], @params[:old_cabinet]
     )
     @day_names = @wrapper.day_names
 
     req.post do
-      @params = DryResultFormeAdapter.new(MoveLectureSchema.call(req.params))
       change_time_handle(req, @params)
     end
 

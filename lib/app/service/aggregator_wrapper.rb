@@ -84,7 +84,7 @@ class AggregatorWrapper
 
   def find_by_time(day_week, num_lecture, cabinet)
     @scheduler_service
-      .find_by_time(day_week, num_lecture, cabinet)
+      .find_by_time(day_week.to_i, num_lecture.to_i, cabinet.to_i)
   end
 
   def save_changes
