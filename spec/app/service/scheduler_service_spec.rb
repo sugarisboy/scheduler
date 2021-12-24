@@ -179,4 +179,19 @@ RSpec.describe SchedulerService do
     result = service.find_by_cabinet(cabinet)
     expect(result).to_not be_nil
   end
+
+  it 'should return all lectures by time' do
+    lector = 'lector'
+    cabinet = 707
+    group = 'group'
+    allow(query_builder).to receive(:lector).with(lector)
+                                            .and_return(query_builder)
+    allow(query_builder).to receive(:cabinet).with(cabinet)
+                                             .and_return(query_builder)
+    allow(query_builder).to receive(:groups_in).with(group)
+                                               .and_return(query_builder)
+
+    result = service.find_by_filters(lector, cabinet, group)
+    expect(result).to_not be_nil
+  end
 end
