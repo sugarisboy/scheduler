@@ -45,7 +45,8 @@ class SchedulerService
 
   def delete_lecture(lecture)
     info_about_removable = @repository.find_lecture(lecture, extend: true)
-    raise "Not found lecture: #{lecture}" if info_about_removable.nil?
+
+    return nil if info_about_removable.nil?
 
     deleted = @repository.delete_lecture(
       info_about_removable[:day_week],
@@ -82,5 +83,26 @@ class SchedulerService
 
   def find_by_cabinet(cabinet)
     @repository.find_all_lectures.cabinet(cabinet).result
+  end
+
+  def find_by_time(day_week, num_lecture, cabinet)
+    lectures = @repository
+               .find_all_lectures
+               .day_week(day_week)
+               .num_lecture(num_lecture)
+               .cabinet(cabinet)
+               .lectures
+
+    return if lectures.empty?
+
+    lectures[0]
+  end
+
+  def find_by_filters(lector, cabinet, group)
+    query = @repository.find_all_lectures
+    query = query.lector(lector) if !lector.nil? && !lector.empty?
+    query = query.cabinet(cabinet) if !cabinet.nil? && cabinet.to_i != 0
+    query = query.groups_in(group) if !group.nil? && !group.empty?
+    query.result
   end
 end

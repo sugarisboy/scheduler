@@ -1,0 +1,61 @@
+<h2>Перенос занятия</h2>
+
+<% if !@response.nil? && @response[:business_error] %>
+  <div style="background-color: #8a1f11;color: white;padding: 8px">
+    <b>Ошибка: </b><%= @response[:business_error] %>
+  </div>
+<% end %>
+
+<% unless @lecture.nil? %>
+  <% form({ method: :post }, { obj: @params }) do |f| %>
+    <table>
+      <thead>
+      <tr>
+        <td><b> Название атрибута </b></td>
+        <td><b> Старое значение </b></td>
+        <td><b> Новое значение </b></td>
+      </tr>
+      </thead>
+
+      <tr>
+        <td>Основная информация</td>
+        <td>
+          <b>Предмет:</b> <%= @lecture.subject %><br/>
+          <b>Преподаватель:</b> <%= @lecture.lector %><br/>
+          <b>Группы:</b> <%= @lecture.groups.join(', ') %>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td><b> День недели </b></td>
+        <td> <%= @day_names[@params[:old_day_week]] %> </td>
+        <td> <%= f.input(:new_day_week, type: :select, placeholder: '1-6', options: @day_names.values) %> </td>
+      </tr>
+
+      <tr>
+        <td><b> Номер лекции </b></td>
+        <td> <%= @params[:old_num_lecture] %>-ая</td>
+        <td> <%= f.input(:new_num_lecture, type: :number, placeholder: '1-6') %> </td>
+      </tr>
+
+      <tr>
+        <td><b> Кабинет </b></td>
+        <td> <%= @params[:old_cabinet] %> </td>
+        <td> <%= f.input(:new_cabinet, type: :number, placeholder: '312') %> </td>
+      </tr>
+
+    </table>
+
+    <%= f.input(:old_day_week, type: :hidden) %>
+    <%= f.input(:old_num_lecture, type: :hidden) %>
+    <%= f.input(:old_cabinet, type: :hidden) %>
+
+    <div style="float: right">
+      <%= f.button(value: 'Выполнить перенос занятия', class: 'success button') %>
+    </div>
+  <% end %>
+<% else %>
+  <h3>Лекция не найдена</h3>
+  <a href="/menu">Вернуться в меню</a>
+<% end %>

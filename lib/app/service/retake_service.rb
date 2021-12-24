@@ -20,12 +20,12 @@ class RetakeService
     cabinets = @lector_service.find_cabinets(lector)
 
     # Для каждого дня попытаемся найти время для пересдачи
+    result = []
     (1..6).each do |day|
-      result = find_retake_time_in_day(day, lector, groups, cabinets)
-      return result unless result.nil?
+      result.concat find_retake_time_in_day(day, lector, groups, cabinets)
     end
 
-    nil
+    result
   end
 
   # Поиск пересдачи в конкретный день, для конкретного лектора и группы
@@ -91,6 +91,7 @@ class RetakeService
   end
 
   def calculate(day, hash)
+    result = []
     prev = []
     hash.each_pair do |num_lecture, value|
       cross = prev & value
@@ -98,12 +99,13 @@ class RetakeService
 
       next if cross.empty?
 
-      return {
+      result << {
         week_day: day,
         cabinet: cross.sample,
         num_lectures: [num_lecture - 1, num_lecture]
       }
     end
-    nil
+
+    result
   end
 end

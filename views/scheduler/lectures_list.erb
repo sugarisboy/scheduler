@@ -1,0 +1,77 @@
+<h2>Просмотр расписания</h2>
+
+<% form({ method: :get }, { obj: @params }) do |f| %>
+  <div style="display: flex;flex-direction: row">
+  <%= f.input(:lector, type: :select, label: 'Фильтрация по преподавателю', options: @lectors, add_blank: true)%>
+  <%= f.input(:group, type: :select, label: 'Фильтрация по группе', options: @groups, add_blank: true)%>
+  <%= f.input(:cabinet, type: :number, label: 'Фильтрация по кабинету') %>
+    <label>
+      <br/>
+      <%= f.button(value: 'OK', class: 'success button') %>
+    </label>
+
+  </div>
+<% end %>
+
+<div class="grid-x">
+  <div class="cell small-6">
+    <% @scheduler.data.each_pair do |day_week, day_data| %>
+
+      <h3><b> <%= @day_names[day_week] %> </b></h3>
+
+      <table>
+        <thead>
+
+        <tr>
+          <th>Кабинет</th>
+          <th>Предмет</th>
+          <th>Преподаватель</th>
+          <th>Группы</th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+
+        <% day_data.sorted_data.each_pair do |num_lecture, lectures| %>
+          <tr style="background-color: #f7cfcf">
+            <td><b> <%= num_lecture %> </b></td>
+            <td><b> лекция </b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <% lectures.each do |lecture| %>
+            <tr>
+              <td> <%= lecture.cabinet %> </td>
+              <td> <%= lecture.subject %> </td>
+              <td> <%= lecture.lector %> </td>
+              <td> <%= lecture.groups_as_str %> </td>
+              <td>
+                <form action="/scheduler/change_time" method="get">
+                  <input name="old_day_week" value="<%= day_week %>" type="hidden"/>
+                  <input name="old_num_lecture" value="<%= num_lecture %>" type="hidden"/>
+                  <input name="old_cabinet" value="<%= lecture.cabinet %>" type="hidden"/>
+                  <button class="warning button" type="submit">ПЕРЕНЕСТИ</button>
+                </form>
+              </td>
+
+              <td>
+                <form action="/scheduler/delete" method="post">
+                  <input name="day" value="<%= day_week %>" type="hidden"/>
+                  <input name="num" value="<%= num_lecture %>" type="hidden"/>
+                  <input name="cabinet" value="<%= lecture.cabinet %>" type="hidden"/>
+                  <button class="alert button" type="submit">УДАЛИТЬ</button>
+                </form>
+              </td>
+
+            </tr>
+          <% end %>
+        <% end %>
+
+      </table>
+    <% end %>
+  </div>
+</div>
+
+

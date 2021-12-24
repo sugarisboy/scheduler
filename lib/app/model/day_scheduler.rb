@@ -13,4 +13,12 @@ class DayScheduler
 
     @data.freeze
   end
+
+  def sorted_data
+    result = {}
+    @data.each_pair do |key, value|
+      result[key] = value.sort_by(&:cabinet)
+    end
+    result
+  end
 end

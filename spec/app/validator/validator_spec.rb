@@ -2,7 +2,7 @@
 
 require_relative '../../../lib/app/validators/validator'
 
-RSpec.describe CommandPrintCriteria do
+RSpec.describe Validator do
   let(:validator) { Validator.new }
 
   [
@@ -55,6 +55,24 @@ RSpec.describe CommandPrintCriteria do
 
       unless success
         expect { validator.not_empty?(value, 'field') }.to raise_error
+      end
+    end
+  end
+
+  [
+    ['5', true],
+    ['9321', true],
+    ['0', false],
+    ['-7', false],
+    ['-9999', false]
+  ].each do |value, success|
+    it 'Should validate not empty' do
+      if success
+        expect { validator.positive?(value, 'field') }.to_not raise_error
+      end
+
+      unless success
+        expect { validator.positive?(value, 'field') }.to raise_error
       end
     end
   end

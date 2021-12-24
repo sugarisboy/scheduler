@@ -10,7 +10,6 @@ class BeanFactory
 
   # Добавить бин в контекст приложения
   def add(instance_bean)
-    # TODO: add check is bean
     type = instance_bean.class
 
     if @factory.key?(type)

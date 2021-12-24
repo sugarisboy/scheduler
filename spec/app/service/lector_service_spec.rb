@@ -31,7 +31,7 @@ RSpec.describe LectorService do
     expect(lectures.count).to eq(2)
   end
 
-  it 'should return all lectors from schedule' do
+  it 'should return all lector from schedule' do
     lectors = service.find_lectors(scheduler)
     expect(lectors).not_to be_nil
     expect(lectors).to include('lector1', 'lector2')

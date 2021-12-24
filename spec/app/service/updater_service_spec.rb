@@ -60,7 +60,7 @@ RSpec.describe UpdaterService do
 
     expect(s_serv).to_not receive(:add_lecture).with(1, 2, lecture)
 
-    service.update(lecture) do |changeable|
+    service.update(lecture, 3, 4) do |changeable|
       changeable.cabinet = 709
     end
   end
