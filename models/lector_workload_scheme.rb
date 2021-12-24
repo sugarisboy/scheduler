@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 LectorWorkloadScheme = Dry::Schema.Params do
-  required(:lector).filled(:string)
+  required(:lector).maybe(:string)
 end
